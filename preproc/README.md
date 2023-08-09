@@ -5,3 +5,4 @@
 2. FreeSurfer
 3. CBIG2016 Preprocessing Pipeline (with tedana)
 4. tSNR
+5. Motion Metrics
