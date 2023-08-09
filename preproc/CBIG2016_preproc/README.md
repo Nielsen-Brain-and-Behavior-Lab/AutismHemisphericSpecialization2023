@@ -10,6 +10,8 @@ The following scripts were used to implement the multi-echo preprocessing pipeli
 5. preproc_job.sh Job script to run the preprocessing pipeline.
 6. tedana_wrap.sh Wrapper script to restart the tedana step (sometimes fails for unknown reasons)
 7. tedana_preproc.sh. Job script to restart the tedana step.
+8. CBIG_preproc_tested_config_funconn.sh This is a configuration script provided by CBIG. This script set the 
+$CBIG_CODE_DIR variable in addition to paths to software.
 
 ## Tutorial Guide
 A tutorial guide to using this preprocessing pipeline is available on NeuroDocs (https://neurodocs.readthedocs.io/en/latest/) and with Tedana Integration (https://neurodocs.readthedocs.io/en/latest/cprep/cprep_4.html)
