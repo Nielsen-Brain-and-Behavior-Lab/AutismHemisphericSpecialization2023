@@ -6,7 +6,7 @@ The aim of this study was to estimate hemispheric speiclaization in autism using
 ## Getting Started
 Scripts are organized in the following folders: preproc, ind_parc, network_sa, and stats.
 
-The _preproc_ folder contains scripts for data organization, multi-echo preprocessing (the CBIG2016 pipeline with tedana integrated), and tSNR calculation.
+The _preproc_ folder contains scripts for data organization, FreeSurfer, multi-echo preprocessing (the CBIG2016 pipeline with tedana integrated), and tSNR calculation.
 The _ind_parc_ folder contains scripts for running the Kong2019 MS-HBM pipeline and visualization.
 The _network_sa_ folder contains scripts for calculating network surface area using workbench_command.
 The _stats_ folder contains scripts for manuscript figure generation and statistical analyses.
