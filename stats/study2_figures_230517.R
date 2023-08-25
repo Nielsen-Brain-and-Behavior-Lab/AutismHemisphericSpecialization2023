@@ -14,6 +14,7 @@ library(rstatix)
 library(psych) #ICC
 library(readxl) #import excel files
 library(circlize) #chord diagrams
+library(MatchIt) #matching subjects
 
 #-----------------------------------ALL DEMOS------------------------------
 #Load UTAH dataset
@@ -489,7 +490,7 @@ study2 <- subset(study2, NewNetwork=="1")
             }
           }    
           
-      # Create the point and line plot (VERTICAL)
+      # Create the point and line plot (VERTICAL, 17N)
           GroupPalette <- c("#0072B2", "#E69F00")
           #network_order <- c('17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1')
           network_order <- c('6', '15', '5', '13', '10', '9', '7', '4', '14', '16', '3', '1', '8', '12', '2', '11', '17')
@@ -514,6 +515,33 @@ study2 <- subset(study2, NewNetwork=="1")
               axis.line = element_line(colour = "black", size = 1, linetype = "solid")
             )
           ggsave(filename = paste("Study2_UT_RETEST1_GROUP_NSAR_PointLineAdjusted_230803.png"), width = 3.35, height = 6,
+                 path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+
+  # Create the point and line plot (VERTICAL, 3N)
+          GroupPalette <- c("#0072B2", "#E69F00")
+          ci_df_subset <- ci_df[ci_df$NewNetwork %in% c(5, 8, 11), ]
+          network_order <- c('5','8','11')
+          ci_df_subset$NewNetwork <- factor(ci_df_subset$NewNetwork, level = network_order)
+          dataset_order <- c("UT-NT", "UT-ASD")
+          ci_df_subset$dataset <- factor(ci_df_subset$dataset, level=dataset_order)
+          ggplot(ci_df_subset, aes(x = MEAN, y = NewNetwork, group=interaction(dataset, NewNetwork), fill=as.factor(dataset))) +
+            geom_errorbarh(aes(xmin=PERC2.5, xmax = PERC97.5), height = 0,  position = position_dodge(width = .4), color="black", size=.5) +
+            geom_point(position = position_dodge(width = .4), size=2, shape=21) +
+            coord_cartesian(ylim= c(1.2, NA), x=c(-0.68,.72), clip = "off") +
+            labs(y = "", x = "") +
+            geom_vline(xintercept = 0, linetype = "dotted", color = "black") +
+            scale_y_discrete(labels=c('LANG','SAL-A','CTRL-B'))+
+            scale_fill_manual(values = GroupPalette) + 
+            theme(
+              axis.text = element_text(size = 10),
+              axis.title = element_text(size = 10),
+              legend.position = "none",
+              axis.text.y = element_text(colour = "black", angle = 0, hjust = 1),
+              axis.text.x = element_text(colour = "black", vjust=1),
+              panel.background = element_blank(),
+              axis.line = element_line(colour = "black", size = 1, linetype = "solid")
+            )
+          ggsave(filename = paste("Study2_UT_RETEST1_3N_GROUP_NSAR_PointLineAdjusted_230824.png"), width = 3.35, height = 3,
                  path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
           
  
@@ -636,7 +664,7 @@ study2 <- subset(study2, NewNetwork=="1")
         
         
 #GROUP DIFFERENCES (REP)        
-        #Bonferroni correction =.003
+        #Bonferroni correction =.03
         #Center variables 
         RETEST2_ALL$Age_Center <- RETEST2_ALL$Age_in_Yrs - (mean(RETEST2_ALL$Age_in_Yrs))
         RETEST2_ALL$FD_Center <- RETEST2_ALL$FD_avg - (mean(RETEST2_ALL$FD_avg))
@@ -746,7 +774,7 @@ study2 <- subset(study2, NewNetwork=="1")
           }
         }    
         
-  # Create the point and line plot (VERTICAL)
+  # Create the point and line plot (VERTICAL, 17N)
         GroupPalette <- c("#0072B2", "#E69F00")
         #network_order <- c('17', '16', '15', '14', '13', '12', '11', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1')
         network_order <- c('6', '15', '5', '13', '10', '9', '7', '4', '14', '16', '3', '1', '8', '12', '2', '11', '17')
@@ -772,9 +800,211 @@ study2 <- subset(study2, NewNetwork=="1")
           )
         ggsave(filename = paste("Study2_UT_RETEST2_GROUP_NSAR_PointLineAdjusted_230803.png"), width = 3.35, height = 6,
                path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+
+ 
+# Create the point and line plot (VERTICAL, 3N)
+        GroupPalette <- c("#0072B2", "#E69F00")
+        ci_df_subset <- ci_df[ci_df$NewNetwork %in% c(5, 8, 11), ]
+        network_order <- c('5','8','11')
+        ci_df_subset$NewNetwork <- factor(ci_df_subset$NewNetwork, level = network_order)
+        dataset_order <- c("UT-NT", "UT-ASD")
+        ci_df_subset$dataset <- factor(ci_df_subset$dataset, level=dataset_order)
+        ggplot(ci_df_subset, aes(x = MEAN, y = NewNetwork, group=interaction(dataset, NewNetwork), fill=as.factor(dataset))) +
+          geom_errorbarh(aes(xmin=PERC2.5, xmax = PERC97.5), height = 0,  position = position_dodge(width = .4), color="black", size=.5) +
+          geom_point(position = position_dodge(width = .4), size=2, shape=21) +
+          coord_cartesian(ylim= c(1.2, NA), x=c(-0.68,.72), clip = "off") +
+          labs(y = "", x = "") +
+          geom_vline(xintercept = 0, linetype = "dotted", color = "black") +
+          scale_y_discrete(labels=c('LANG','SAL-A','CTRL-B'))+
+          scale_fill_manual(values = GroupPalette) + 
+          theme(
+            axis.text = element_text(size = 10),
+            axis.title = element_text(size = 10),
+            legend.position = "none",
+            axis.text.y = element_text(colour = "black", angle = 0, hjust = 1),
+            axis.text.x = element_text(colour = "black", vjust=1),
+            panel.background = element_blank(),
+            axis.line = element_line(colour = "black", size = 1, linetype = "solid")
+          )
+        ggsave(filename = paste("Study2_UT_RETEST2_3N_GROUP_NSAR_PointLineAdjusted_230824.png"), width = 3.35, height = 3,
+               path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
         
-                 
+               
+#--------------------------------------TEST-RETEST NSAR-------------------------------------
+#SETUP
+        #RETEST1
+        RETEST1 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Analysis/Study2_Dissertation/Utah_analysis/network_sa/RETEST1/NETWORK_SA_UT_RETEST1_SUB_NET_LH_RH_230527.csv")
         
+          #Load UT NSAR data
+          RETEST1$SUBJID <- gsub("^.{0,4}", "", RETEST1$SUBJID) #remove "sub-" string
+          RETEST1$Network <- gsub("^.{0,8}", "", RETEST1$NETWORK) #remove "NETWORK-" string
+          RETEST1 <- subset(RETEST1, Network!=0) #drop network0
+          #Switch network ordering to reflect CBIG legend ordering
+          mapping <- c(12, 6, 3, 13, 5, 1, 8, 7, 10, 11, 15, 14, 4, 2, 17, 16, 9)
+          oldvalues <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)
+          RETEST1$NewNetwork <- mapping[ match(RETEST1$Network, oldvalues) ]
+          RETEST1 <- RETEST1[,c("SUBJID", "LH_SA", "RH_SA", "NewNetwork")]
+          #Create SA LAT variable
+          RETEST1$SA_LAT_R1 <- (RETEST1$RH_SA - RETEST1$LH_SA) / (RETEST1$LH_SA + RETEST1$RH_SA)
+          
+        #RETEST2
+        RETEST2 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Analysis/Study2_Dissertation/Utah_analysis/network_sa/RETEST2/NETWORK_SA_UT_RETEST2_SUB_NET_LH_RH_230527.csv")
+        
+            #Load UT NSAR data
+            RETEST2$SUBJID <- gsub("^.{0,4}", "", RETEST2$SUBJID) #remove "sub-" string
+            RETEST2$Network <- gsub("^.{0,8}", "", RETEST2$NETWORK) #remove "NETWORK-" string
+            RETEST2 <- subset(RETEST2, Network!=0) #drop network0
+            #Switch network ordering to reflect CBIG legend ordering
+            mapping <- c(12, 6, 3, 13, 5, 1, 8, 7, 10, 11, 15, 14, 4, 2, 17, 16, 9)
+            oldvalues <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)
+            RETEST2$NewNetwork <- mapping[ match(RETEST2$Network, oldvalues) ]
+            RETEST2 <- RETEST2[,c("SUBJID", "LH_SA", "RH_SA", "NewNetwork")]
+            #Create SA LAT variable
+            RETEST2$SA_LAT_R2 <- (RETEST2$RH_SA - RETEST2$LH_SA) / (RETEST2$LH_SA + RETEST2$RH_SA)
+            
+        #Load demos
+        study2 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/csv_files/study2_UU_NSAR_entirety_230802.csv")
+        study2 <- subset(study2, NewNetwork==1)
+        study2 <- study2[,c("SUBJID", "dataset", "Age_in_Yrs", "sex", "Handedness")]
+        
+        #subset RETEST1 to subjects that passed exclusion criteria
+        UU_IDS <- study2$SUBJID
+        RETEST1 <- RETEST1[RETEST1$SUBJID %in% UU_IDS, ]
+        RETEST2 <- RETEST2[RETEST2$SUBJID %in% UU_IDS, ]
+        
+        #merge
+        RETEST1_ALL <- merge(RETEST1, study2, by=c("SUBJID"), all=FALSE)
+        RETEST <- merge(RETEST2, RETEST1_ALL, by=c("SUBJID", "NewNetwork"), all=TRUE)
+        
+        
+#Calculate network-level ICC for NSAR        
+        # Create an empty dataframe to store ICC3 values
+        icc_net_df <- data.frame(NSAR_ICC = numeric(0))
+        for (network in unique(RETEST$NewNetwork)) {
+          # Create dataframe subset
+          df_subset <- subset(RETEST, NewNetwork == network)[, c("SA_LAT_R1", "SA_LAT_R2")]
+          
+          # Rename dataframe
+          df_name <- paste("nsar_wide_dataR.", network, sep = "")
+          assign(df_name, df_subset)
+          
+          # Compute ICC and save ICC3 value to dataframe
+          icc_result <- suppressWarnings(ICC(get(df_name)))
+          icc3_value <- icc_result$results$ICC[3]
+          icc_net_df <- rbind(icc_net_df, data.frame(NSAR_ICC = icc3_value))
+        }
+        
+        #Add SUBJID variable: 
+        icc_net_df$NewNetwork <- unique(RETEST$NewNetwork)
+        
+ 
+
+        
+#NETWORK SCATTERPLOTS
+        for (n in 1:17) {
+          subsetted_data <- subset(RETEST, NewNetwork == n)  # Subsetting the dataset based on Network
+          icc <- icc_net_df$NSAR_ICC
+          icc_ordered <- icc[order(icc_net_df$NewNetwork)]
+          Network_Names<- c("VIS-A", "VIS-B", "SOM-A", "SOM-B", "LANG", "DAN-A", "DAN-B", "SAL-A", "SAL-B", "CTRL-A", "CTRL-B", "CTRL-C", "DEF-A", "DEF-B", "DEF-C", "LIM-A", "LIM-B")
+          
+          min_value <- min(subsetted_data$SA_LAT_R1, subsetted_data$SA_LAT_R2)
+          max_value <- max(subsetted_data$SA_LAT_R1, subsetted_data$SA_LAT_R2)
+          
+          CBIG_Palette <- c("#602368", "#DC1F26", "#4582A7", "#21B88B", "#32489E", "#4A9644", "#106A36", "#833C98", "#E383B1", "#CC8229", "#7B2C3F", "#6F809A", "#E3E218", "#A9313D", "#1C1B55", "#40471D", "#BCCF7E")
+          subsetted_data$NewNetwork <- as.factor(subsetted_data$NewNetwork)
+          subsetted_data$SUBJID <- as.factor(subsetted_data$SUBJID)
+          
+          filename <- paste("Study2_UT_NSAR_RETEST_Plots_Network", n, "_230810.png", sep = "")
+          plot_title <- paste(Network_Names[n], " ICC: ", format(round(icc_ordered[n], 2), nsmall = 2), sep="")
+          
+          ggplot(subsetted_data, aes(x = SA_LAT_R2, y = SA_LAT_R1, color = NewNetwork)) +
+            labs(x = "NSAR Session 2", y = "NSAR Session 1") +
+            labs(fill = " ", color = " ") +
+            ggtitle(plot_title)+
+            geom_point(aes(fill = NewNetwork),color="black", pch = 21) +
+            geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black", size = 1) +
+            geom_smooth(aes(color = NewNetwork), method = "lm", size = 0.75, se = FALSE) +
+            scale_y_continuous(limits = c(min_value, max_value), labels = function(x) gsub("^0\\.", ".", sprintf("%.2f", x))) +
+            scale_x_continuous(limits = c(min_value, max_value), labels = function(x) gsub("^0\\.", ".", sprintf("%.2f", x))) +
+            scale_color_manual(values = CBIG_Palette[n]) +
+            scale_fill_manual(values = CBIG_Palette[n]) +
+            theme_bw() +
+            theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                  plot.title = element_text(hjust = 0, size=10),
+                  axis.title = element_text(colour = "black", size = 10),
+                  axis.text.y = element_text(colour = "black", angle = 90, hjust = 0.6, size=9),
+                  axis.text.x = element_text(colour = "black", size=9),
+                  legend.position = "none",
+                  legend.title = element_text(colour = "black", size = 11),
+                  legend.text = element_text(colour = "black", size = 11),
+                  legend.background = element_rect(fill = "white", size = 0.5),
+                  axis.line = element_line(colour = "black", size = 1, linetype = "solid"),
+                  axis.ticks = element_line(colour = "black", size = 1, linetype = "solid"),
+                  panel.border = element_blank(),
+                  panel.background = element_blank())
+          
+          ggsave(filename = filename, width = 1.675, height = 1.675,
+                 path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+        }
+        
+                
+               
+#--------------------------------------TEST-RETEST TSNR---------------------------------
+        
+        
+       
+         
+#---------------------------------------TEST-RETEST DICE-------------------------------
+#SETUP: SINGLE DICE
+        #Load Single Dice
+        SINGLE_DICE <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Analysis/Study2_Dissertation/Utah_analysis/dice/RETEST/UT_RETEST_dice_singular_230810.csv")
+        #Merge demos
+        study2 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/csv_files/study2_UU_NSAR_entirety_230802.csv")
+        study2 <- subset(study2, NewNetwork==1)
+        study2 <- study2[,c("SUBJID", "dataset", "Age_in_Yrs", "sex", "Handedness")]
+        
+        SINGLE_DICE <- merge(SINGLE_DICE, study2, by=c("SUBJID"), all=FALSE)
+        
+        
+        #Fig. 1: Subject RAINCLOUD OF SINGLE DICE X TIME
+        Palette <- c("#E69F00", "#0072B2")
+        ggplot(SINGLE_DICE, aes(x = dataset, y = Dice, fill=dataset)) + 
+          ggdist::stat_halfeye(
+            adjust = .5, 
+            width = .6, 
+            .width = 0, 
+            justification = -.3, 
+            point_colour = "NA") + 
+          geom_boxplot(
+            width = .25, 
+            outlier.shape = 21, 
+            outlier.fill = NULL
+          ) +
+          geom_point(
+            size = 1.3,
+            alpha = .3,
+            position = position_jitter(
+              seed = 1, width = .1
+            )
+          ) + 
+          coord_cartesian((xlim = c(1.2, NA)), clip = "off")+
+          labs(y="Subject Dice Coefficient", x="")+
+          scale_colour_manual(values=Palette)+
+          scale_fill_manual(values=Palette)+  theme(axis.text=element_text(size = 9), axis.title = element_text(size = 12))+
+          scale_x_discrete(labels=c("ASD", "NT")) +
+          theme(legend.position = "none", axis.text.y =element_text(colour = "black", angle = 90, hjust = 0.6), axis.text.x =element_text(colour = "black", hjust = 0.6))+
+          theme(panel.background = element_blank())+
+          theme(axis.line = element_line(colour = "black", size = 1, linetype = "solid"))
+        ggsave(filename = paste("Study2_UT_SingleDice_230810.png"), width = 3.35, height = 3.35,
+               path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures", dpi = 300)
+        
+
+        
+        
+#SETUP: NETWORK DICE
+        
+        
+                
 #-----------------------------------NT VALIDATION: COMPLETE DATASET-------------------------
 #SETUP: 
         #Load UTAH dataset
@@ -1396,7 +1626,176 @@ study2 <- subset(study2, NewNetwork=="1")
             )
           ggsave(filename = paste("Study2_UT_LHRH_SA_ADJ_Percent_17N_Boxplots_230609.png"), width = 6.9, height = 2.35,
                  path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+
+#-----------------------------------MATCHED GROUP COMPARISONS-------------------------------------
+#Uses MatchIt package  
           
+#1. MEAN FD
+          #MATCH on MEAN FD
+            #Load UT dataset
+            UT_NSAR <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/csv_files/study2_UU_NSAR_entirety_230802.csv")
+            #Center variables 
+            UT_NSAR$Age_Center <- UT_NSAR$Age_in_Yrs - (mean(UT_NSAR$Age_in_Yrs))
+            UT_NSAR$FD_Center <- UT_NSAR$FD_avg - (mean(UT_NSAR$FD_avg))
+          
+            #Binarize AutismControl
+            UT_NSAR$Dx_bin <- ifelse(UT_NSAR$dataset == "UT-NT", 0, 1)
+            set.seed(42) #seed is set for reproducibility
+            m.out=matchit(Dx_bin~FD_avg, method="nearest", data=UT_NSAR, ratio=1)
+            summary(m.out)
+            #verify good match with qq-plots
+            plot(m.out, type = "qq", interactive = FALSE, which.xs = c("FD_avg"))
+            #extract matched dataset
+            m.data1 <- match.data(m.out, drop.unmatched = TRUE)
+
+            
+        #Grab basic info about matched dataset
+            #Convert matched dataset to wide format
+            FDMATCH <- subset(m.data1, NewNetwork=="1")
+            
+            #Participants x group
+            table(FDMATCH$dataset)
+            
+        #Run models using FD-matched participants
+          for (i in 1:17) {
+            # Subset the data based on NewNetwork value
+            subset_data <- subset(m.data1, NewNetwork == i)
+            
+            # Fit the linear regression model
+            subset_data$Age_Center <- as.numeric(subset_data$Age_Center)
+            subset_data$SA_LAT <- as.numeric(subset_data$SA_LAT)
+            subset_data$FD_Center <- as.numeric(subset_data$FD_Center)
+            subset_data$dataset <- as.factor(subset_data$dataset)
+            subset_data$handedness <- as.numeric(subset_data$Handedness)
+            
+            model <- lm(SA_LAT ~ dataset + Age_Center + FD_Center + Handedness, data = subset_data)
+            # Create a unique name for each model
+            model_name <- paste("UT_NSAR_FDMATCH_model", i, sep = "")
+            
+            # Assign the model to the unique name
+            assign(model_name, model)
+          }
+          
+          #Access model results through: summary(UT_NSAR_FDMATCH_model1)
+
+#2. VOLUMES AVAILABLE
+            #MATCH on % VOLUMES AVAILABLE
+              #Load UT dataset
+              UT_NSAR <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/csv_files/study2_UU_NSAR_entirety_230802.csv")
+              #Center variables 
+              UT_NSAR$Age_Center <- UT_NSAR$Age_in_Yrs - (mean(UT_NSAR$Age_in_Yrs))
+              UT_NSAR$FD_Center <- UT_NSAR$FD_avg - (mean(UT_NSAR$FD_avg))
+              
+              #Binarize AutismControl
+              UT_NSAR$Dx_bin <- ifelse(UT_NSAR$dataset == "UT-NT", 0, 1)
+              set.seed(42) #seed is set for reproducibility
+              m.out=matchit(Dx_bin~Percent_Vols, method="nearest", data=UT_NSAR, ratio=1)
+              summary(m.out)
+              #verify good match with qq-plots
+              plot(m.out, type = "qq", interactive = FALSE, which.xs = c("Percent_Vols"))
+              #extract matched dataset
+              m.data2 <- match.data(m.out, drop.unmatched = TRUE)
+              
+              
+            #Grab basic info about matched dataset
+              #Convert matched dataset to wide format
+              PVMATCH <- subset(m.data2, NewNetwork=="1")
+              
+              #Participants x group
+              table(PVMATCH$dataset)
+              
+            #Run models using FD-matched participants
+            for (i in 1:17) {
+              # Subset the data based on NewNetwork value
+              subset_data <- subset(m.data2, NewNetwork == i)
+              
+              # Fit the linear regression model
+              subset_data$Age_Center <- as.numeric(subset_data$Age_Center)
+              subset_data$SA_LAT <- as.numeric(subset_data$SA_LAT)
+              subset_data$FD_Center <- as.numeric(subset_data$FD_Center)
+              subset_data$dataset <- as.factor(subset_data$dataset)
+              subset_data$handedness <- as.numeric(subset_data$Handedness)
+              
+              model <- lm(SA_LAT ~ dataset + Age_Center + FD_Center + Handedness, data = subset_data)
+              # Create a unique name for each model
+              model_name <- paste("UT_NSAR_PVMATCH_model", i, sep = "")
+              
+              # Assign the model to the unique name
+              assign(model_name, model)
+            }
+            
+            #Access model results through: summary(UT_NSAR_PVMATCH_model1)
+            
+ 
+              
+#2. FIQ
+              #MATCH on % VOLUMES AVAILABLE
+                #Load UT dataset
+                UT_NSAR <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/csv_files/study2_UU_NSAR_entirety_230802.csv")
+                #Center variables 
+                UT_NSAR$Age_Center <- UT_NSAR$Age_in_Yrs - (mean(UT_NSAR$Age_in_Yrs))
+                UT_NSAR$FD_Center <- UT_NSAR$FD_avg - (mean(UT_NSAR$FD_avg))
+                
+                #Merge in FIQ
+                IQ <- read_excel("C:/Users/maddy/Box/Autism_Longitudinal_Neuroimaging/Jared_BYU/UU_Lainhart_Data_June_2015_Times1to3/IQ_allTimes_20Apr15.xlsx") #LONG
+               
+                #Take mean scores across available timepoints
+                MEAN_FIQ <-aggregate(x = as.numeric(IQ$FIQ),  # Specify  data column
+                                     by = list(IQ$LabID),              # Specify group indicator
+                                     FUN = mean, na.rm=TRUE)  
+                names(MEAN_FIQ)[1] <- "SUBJID"
+                names(MEAN_FIQ)[2] <- "MEAN_FIQ"
+                
+                #Merge with UT NSAR data
+                UU_IQ <- merge(MEAN_FIQ, UT_NSAR, by=c("SUBJID"), all=TRUE)
+                
+                #Filter to participants with parc data
+                UU_IQ <- subset(UU_IQ, FD_avg!="NA")
+                
+                #Filter to participants with FIQ data
+                UU_IQ <- subset(UU_IQ, MEAN_FIQ!="NA")
+                
+                #Binarize AutismControl
+                UU_IQ$Dx_bin <- ifelse(UU_IQ$dataset == "UT-NT", 0, 1)
+                set.seed(42) #seed is set for reproducibility
+                m.out=matchit(Dx_bin~MEAN_FIQ, method="nearest", data=UU_IQ, ratio=1)
+                summary(m.out)
+                #verify good match with qq-plots
+                plot(m.out, type = "qq", interactive = FALSE, which.xs = c("MEAN_FIQ"))
+                #extract matched dataset
+                m.data3 <- match.data(m.out, drop.unmatched = TRUE)
+                
+              
+              #Grab basic info about matched dataset
+                #Convert matched dataset to wide format
+                FIQMATCH <- subset(m.data3, NewNetwork=="1")
+                
+                #Participants x group
+                table(FIQMATCH$dataset)
+                
+              #Run models using FD-matched participants
+              for (i in 1:17) {
+                # Subset the data based on NewNetwork value
+                subset_data <- subset(m.data3, NewNetwork == i)
+                
+                # Fit the linear regression model
+                subset_data$Age_Center <- as.numeric(subset_data$Age_Center)
+                subset_data$SA_LAT <- as.numeric(subset_data$SA_LAT)
+                subset_data$FD_Center <- as.numeric(subset_data$FD_Center)
+                subset_data$dataset <- as.factor(subset_data$dataset)
+                subset_data$handedness <- as.numeric(subset_data$Handedness)
+                
+                model <- lm(SA_LAT ~ dataset + Age_Center + FD_Center + Handedness, data = subset_data)
+                # Create a unique name for each model
+                model_name <- paste("UT_NSAR_FIQMATCH_model", i, sep = "")
+                
+                # Assign the model to the unique name
+                assign(model_name, model)
+              }
+              
+              #Access model results through: summary(UT_NSAR_FIQMATCH_model1)
+              
+                                 
 #-----------------------------------GROUP ANALYSIS: UT HYP.3---------------------------
 #SETUP
           #Load UTAH dataset
