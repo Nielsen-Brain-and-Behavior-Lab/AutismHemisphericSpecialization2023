@@ -15,6 +15,7 @@ library(psych) #ICC
 library(readxl) #import excel files
 library(circlize) #chord diagrams
 library(MatchIt) #matching subjects
+library(ggpattern) #hatching on surface area barplots
 
 #-----------------------------------ALL DEMOS------------------------------
 #Load UTAH dataset
@@ -545,6 +546,62 @@ study2 <- subset(study2, NewNetwork=="1")
                  path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
           
  
+    
+  # Create the BOXPLOT (VERTICAL, 3N)
+          GroupPalette <- c("#0072B2", "#E69F00")
+          RETEST1_subset <- RETEST1_ALL[RETEST1_ALL$NewNetwork %in% c(5, 8, 11), ]
+          network_order <- c('5','8','11')
+          RETEST1_subset$NewNetwork <- factor(RETEST1_subset$NewNetwork, level = network_order)
+          dataset_order <- c("UT-NT", "UT-ASD")
+          RETEST1_subset$dataset <- factor(RETEST1_subset$dataset, level=dataset_order)
+          ggplot(RETEST1_subset, aes(x = SA_LAT_ADJ, y = NewNetwork, group=interaction(dataset, NewNetwork), fill=as.factor(dataset))) +
+            geom_boxplot(width = .75, outlier.shape = 21, outlier.fill = NULL) +
+            coord_cartesian(ylim= c(1.2, NA), x=c(-0.68,.72), clip = "off") +
+            labs(y = "", x = "") +
+            geom_vline(xintercept = 0, linetype = "dotted", color = "black") +
+            scale_y_discrete(labels=c('LANG','SAL-A','CTRL-B'))+
+            scale_fill_manual(values = GroupPalette) + 
+            theme(
+              axis.text = element_text(size = 10),
+              axis.title = element_text(size = 10),
+              legend.position = "none",
+              axis.text.y = element_text(colour = "black", angle = 0, hjust = 1),
+              axis.text.x = element_text(colour = "black", vjust=1),
+              panel.background = element_blank(),
+              axis.line = element_line(colour = "black", size = 1, linetype = "solid")
+            )
+          ggsave(filename = paste("Study2_UT_RETEST1_3N_GROUP_NSAR_Boxplot_230902.png"), width = 2.3, height = 2.3,
+                 path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+          
+     
+          
+  # Create the BOXPLOT (VERTICAL, 8N)
+          GroupPalette <- c("#0072B2", "#E69F00")
+          network_order <- c('6', '15', '5', '8', '12', '2', '11', '17')
+          RETEST1_subset <- RETEST1_ALL[RETEST1_ALL$NewNetwork %in% network_order, ]
+          RETEST1_subset$NewNetwork <- factor(RETEST1_subset$NewNetwork, level = network_order)
+          dataset_order <- c("UT-NT", "UT-ASD")
+          RETEST1_subset$dataset <- factor(RETEST1_subset$dataset, level=dataset_order)
+          ggplot(RETEST1_subset, aes(x = SA_LAT_ADJ, y = NewNetwork, group=interaction(dataset, NewNetwork), fill=as.factor(dataset))) +
+            geom_boxplot(width = .75, outlier.shape = 21, outlier.fill = NULL) +
+            coord_cartesian(ylim= c(1.2, NA), x=c(-0.7,.9), clip = "off") +
+            labs(y = "", x = "") +
+            geom_vline(xintercept = 0, linetype = "dotted", color = "black") +
+            scale_y_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
+            scale_fill_manual(values = GroupPalette) + 
+            theme(
+              axis.text = element_text(size = 10),
+              axis.title = element_text(size = 10),
+              legend.position = "none",
+              axis.text.y = element_text(colour = "black", angle = 0, hjust = 1),
+              axis.text.x = element_text(colour = "black", vjust=1),
+              panel.background = element_blank(),
+              axis.line = element_line(colour = "black", size = 1, linetype = "solid")
+            )
+          ggsave(filename = paste("Study2_UT_RETEST1_GROUP_NSAR_BOXPLOT_230902.png"), width = 3.35, height = 6,
+                 path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+          
+               
 #----------------------------------REPLICATION DATASET-----------------------------------
   #LOAD RETEST 2
       #Network surface area
@@ -829,7 +886,409 @@ study2 <- subset(study2, NewNetwork=="1")
         ggsave(filename = paste("Study2_UT_RETEST2_3N_GROUP_NSAR_PointLineAdjusted_230824.png"), width = 3.35, height = 3,
                path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
         
-               
+
+        
+      # Create the BOXPLOT (VERTICAL, 3N)
+        GroupPalette <- c("#0072B2", "#E69F00")
+        RETEST2_subset <- RETEST2_ALL[RETEST2_ALL$NewNetwork %in% c(5, 8, 11), ]
+        network_order <- c('5','8','11')
+        RETEST2_subset$NewNetwork <- factor(RETEST2_subset$NewNetwork, level = network_order)
+        dataset_order <- c("UT-NT", "UT-ASD")
+        RETEST2_subset$dataset <- factor(RETEST2_subset$dataset, level=dataset_order)
+        ggplot(RETEST2_subset, aes(x = SA_LAT_ADJ, y = NewNetwork, group=interaction(dataset, NewNetwork), fill=as.factor(dataset))) +
+          geom_boxplot(width = .75, outlier.shape = 21, outlier.fill = NULL) +
+          coord_cartesian(ylim= c(1.2, NA), x=c(-0.68,.72), clip = "off") +
+          labs(y = "", x = "") +
+          geom_vline(xintercept = 0, linetype = "dotted", color = "black") +
+          scale_y_discrete(labels=c('LANG','SAL-A','CTRL-B'))+
+          scale_fill_manual(values = GroupPalette) + 
+          theme(
+            axis.text = element_text(size = 10),
+            axis.title = element_text(size = 10),
+            legend.position = "none",
+            axis.text.y = element_text(colour = "black", angle = 0, hjust = 1),
+            axis.text.x = element_text(colour = "black", vjust=1),
+            panel.background = element_blank(),
+            axis.line = element_line(colour = "black", size = 1, linetype = "solid")
+          )
+        ggsave(filename = paste("Study2_UT_RETEST2_3N_GROUP_NSAR_Boxplot_230902.png"), width = 2.3, height = 2.3,
+               path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+        
+        
+        
+      # Create the BOXPLOT (VERTICAL, 8N)
+        GroupPalette <- c("#0072B2", "#E69F00")
+        network_order <- c('6', '15', '5', '8', '12', '2', '11', '17')
+        RETEST2_subset <- RETEST2_ALL[RETEST2_ALL$NewNetwork %in% network_order, ]
+        RETEST2_subset$NewNetwork <- factor(RETEST2_subset$NewNetwork, level = network_order)
+        dataset_order <- c("UT-NT", "UT-ASD")
+        RETEST2_subset$dataset <- factor(RETEST2_subset$dataset, level=dataset_order)
+        ggplot(RETEST2_subset, aes(x = SA_LAT_ADJ, y = NewNetwork, group=interaction(dataset, NewNetwork), fill=as.factor(dataset))) +
+          geom_boxplot(width = .75, outlier.shape = 21, outlier.fill = NULL) +
+          coord_cartesian(ylim= c(1.2, NA), x=c(-0.7,.9), clip = "off") +
+          labs(y = "", x = "") +
+          geom_vline(xintercept = 0, linetype = "dotted", color = "black") +
+          scale_y_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
+          scale_fill_manual(values = GroupPalette) + 
+          theme(
+            axis.text = element_text(size = 10),
+            axis.title = element_text(size = 10),
+            legend.position = "none",
+            axis.text.y = element_text(colour = "black", angle = 0, hjust = 1),
+            axis.text.x = element_text(colour = "black", vjust=1),
+            panel.background = element_blank(),
+            axis.line = element_line(colour = "black", size = 1, linetype = "solid")
+          )
+        ggsave(filename = paste("Study2_UT_RETEST2_GROUP_NSAR_BOXPLOT_230902.png"), width = 3.35, height = 6,
+               path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+        
+        
+#---------------------------------------TEST-RETEST DEMOS-----------------------------------
+  #Load RETEST data to grab retest subjects
+        #Network surface area
+        RETEST2 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Analysis/Study2_Dissertation/Utah_analysis/network_sa/RETEST2/NETWORK_SA_UT_RETEST2_SUB_NET_LH_RH_230527.csv")
+        
+        #Load UT NSAR data
+        RETEST2$SUBJID <- gsub("^.{0,4}", "", RETEST2$SUBJID) #remove "sub-" string
+        RETEST2$Network <- gsub("^.{0,8}", "", RETEST2$NETWORK) #remove "NETWORK-" string
+        RETEST2 <- subset(RETEST2, Network!=0) #drop network0
+        #Switch network ordering to reflect CBIG legend ordering
+        mapping <- c(12, 6, 3, 13, 5, 1, 8, 7, 10, 11, 15, 14, 4, 2, 17, 16, 9)
+        oldvalues <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)
+        RETEST2$NewNetwork <- mapping[ match(RETEST2$Network, oldvalues) ]
+        RETEST2 <- RETEST2[,c("SUBJID", "LH_SA", "RH_SA", "NewNetwork")]
+        #Create SA LAT variable
+        RETEST2$SA_LAT <- (RETEST2$RH_SA - RETEST2$LH_SA) / (RETEST2$LH_SA + RETEST2$RH_SA)
+        #Create % SA vars
+        RETEST2$LH_SA_PERCENT <- (RETEST2$LH_SA/63103.74)*100
+        RETEST2$RH_SA_PERCENT <- (RETEST2$RH_SA/63196.98)*100
+        
+        
+        #Merge with Demos
+        study2 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/csv_files/study2_UU_NSAR_entirety_230802.csv")
+        study2 <- subset(study2, NewNetwork==1)
+        study2 <- study2[,c("SUBJID", "dataset", "Age_in_Yrs", "sex", "Handedness", "Percent_Vols")]
+        
+        #subset RETEST1 to subjects that passed exclusion criteria
+        UU_IDS <- study2$SUBJID
+        RETEST2 <- RETEST2[RETEST2$SUBJID %in% UU_IDS, ]
+        
+        #merge
+        RETEST2_ALL <- merge(RETEST2, study2, by=c("SUBJID"), all=FALSE)
+        
+        #WIDE format
+        RETEST <- subset(RETEST2_ALL, NewNetwork=="1")
+        
+        
+        #Load data (IQ, ADI/ADOS, CELF) times 1-4
+        #CELF <- read_excel("C:/Users/maddy/Box/Autism_Longitudinal_Neuroimaging/Jared_BYU/CELF_PreTime1-4_Clean_20190403.xlsx")
+        IQ <- read_excel("C:/Users/maddy/Box/Autism_Longitudinal_Neuroimaging/Jared_BYU/UU_Lainhart_Data_June_2015_Times1to3/IQ_allTimes_20Apr15.xlsx") #LONG
+        ADI_ADOSCSS <- read_excel("C:/Users/maddy/Box/Autism_CSF/data/ADOSADI.xlsx") #file came directly from Molly Prigge, WIDE
+        names(ADI_ADOSCSS)[1] <- "SUBJID"
+        UU_data_A <- merge(ADI_ADOSCSS, RETEST, by=c("SUBJID"), all=FALSE)
+        #Create ADOS var to include Time5 CSS scores when entry isn't available
+        UU_data_A$ADOS_CSS_COMB <- ifelse(is.na(UU_data_A$ADOS_CSS.Entry), UU_data_A$ADOS_Total_CSS_T5, UU_data_A$ADOS_CSS.Entry)
+        
+        #Take mean scores across available timepoints
+        #IQ
+        MEAN_VIQ <-aggregate(x = IQ$VIQ,  # Specify  data column
+                             by = list(IQ$LabID),              # Specify group indicator
+                             FUN = mean, na.rm=TRUE)  
+        names(MEAN_VIQ)[1] <- "SUBJID"
+        names(MEAN_VIQ)[2] <- "MEAN_VIQ"
+        
+        MEAN_PIQ <-aggregate(x = IQ$PIQ,  # Specify  data column
+                             by = list(IQ$LabID),              # Specify group indicator
+                             FUN = mean, na.rm=TRUE)  
+        names(MEAN_PIQ)[1] <- "SUBJID"
+        names(MEAN_PIQ)[2] <- "MEAN_PIQ"
+        
+        MEAN_FIQ <-aggregate(x = as.numeric(IQ$FIQ),  # Specify  data column
+                             by = list(IQ$LabID),              # Specify group indicator
+                             FUN = mean, na.rm=TRUE)  
+        names(MEAN_FIQ)[1] <- "SUBJID"
+        names(MEAN_FIQ)[2] <- "MEAN_FIQ"
+        
+        #Merge with UT NSAR data
+        UU_IQ <- merge(MEAN_VIQ, RETEST, by=c("SUBJID"), all=TRUE)
+        UU_IQ <- merge(MEAN_PIQ, UU_IQ, by=c("SUBJID"), all=TRUE)
+        UU_IQ <- merge(MEAN_FIQ, UU_IQ, by=c("SUBJID"), all=TRUE)
+        
+        #Filter to participants with parc data
+        UU_IQ <- subset(UU_IQ, SA_LAT!="NA")
+        
+        
+        
+#RETEST DEMOS TABLE  
+        #0. ASD/NT
+          table(RETEST$dataset)
+        #1. Age at scan
+          favstats(data=RETEST, Age_in_Yrs~dataset)
+          #Group comparison (t-test)
+          t.test(Age_in_Yrs~dataset, data=RETEST)
+        #2. % Volumes Available
+          favstats(data=RETEST, Percent_Vols~dataset)
+          #Group comparison (t-test)
+          t.test(Percent_Vols~dataset, data=RETEST)
+        #3. Handedness
+          favstats(data=RETEST, Handedness~dataset)
+          #Group comparison (t-test)
+          t.test(Handedness~dataset, data=RETEST)
+        #4. PIQ  
+          favstats(data=UU_IQ, MEAN_PIQ~dataset)
+          t.test(MEAN_PIQ~dataset, data=UU_IQ)
+        #5. VIQ  
+          favstats(data=UU_IQ, MEAN_VIQ~dataset)
+          t.test(MEAN_VIQ~dataset, data=UU_IQ) 
+        #6. FIQ  
+          favstats(data=UU_IQ, MEAN_FIQ~dataset)
+          t.test(MEAN_FIQ~dataset, data=UU_IQ) 
+        #7. ADOS CSS Entry/T5
+          favstats(UU_data_A$ADOS_CSS_COMB)
+        #8. ADI-R
+          favstats(UU_data_A$ADI_revised)
+        
+
+        
+        
+#DATA QUALITY TABLE
+      #LOAD RETEST 2
+          #Network surface area
+          RETEST2 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Analysis/Study2_Dissertation/Utah_analysis/network_sa/RETEST2/NETWORK_SA_UT_RETEST2_SUB_NET_LH_RH_230527.csv")
+          
+          #Load UT NSAR data
+          RETEST2$SUBJID <- gsub("^.{0,4}", "", RETEST2$SUBJID) #remove "sub-" string
+          RETEST2$Network <- gsub("^.{0,8}", "", RETEST2$NETWORK) #remove "NETWORK-" string
+          RETEST2 <- subset(RETEST2, Network!=0) #drop network0
+          #Switch network ordering to reflect CBIG legend ordering
+          mapping <- c(12, 6, 3, 13, 5, 1, 8, 7, 10, 11, 15, 14, 4, 2, 17, 16, 9)
+          oldvalues <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)
+          RETEST2$NewNetwork <- mapping[ match(RETEST2$Network, oldvalues) ]
+          RETEST2 <- RETEST2[,c("SUBJID", "LH_SA", "RH_SA", "NewNetwork")]
+          #Create SA LAT variable
+          RETEST2$SA_LAT <- (RETEST2$RH_SA - RETEST2$LH_SA) / (RETEST2$LH_SA + RETEST2$RH_SA)
+          #Create % SA vars
+          RETEST2$LH_SA_PERCENT <- (RETEST2$LH_SA/63103.74)*100
+          RETEST2$RH_SA_PERCENT <- (RETEST2$RH_SA/63196.98)*100
+          
+          
+          #Merge with Demos
+          study2 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/csv_files/study2_UU_NSAR_entirety_230802.csv")
+          study2 <- subset(study2, NewNetwork==1)
+          study2 <- study2[,c("SUBJID", "dataset", "Age_in_Yrs", "sex", "Handedness")]
+          
+          #subset RETEST1 to subjects that passed exclusion criteria
+          UU_IDS <- study2$SUBJID
+          RETEST2 <- RETEST2[RETEST2$SUBJID %in% UU_IDS, ]
+          
+          #merge
+          RETEST2_ALL <- merge(RETEST2, study2, by=c("SUBJID"), all=FALSE)
+          
+          #Grab RETEST2-specific FD and DVARS
+          FD_R2 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Analysis/Study2_Dissertation/Utah_analysis/Kong2019_parc_fs6_RETEST2/motion_metrics/FD_avg_UT_RETEST2_230803.csv")
+          DVARS_R2 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Analysis/Study2_Dissertation/Utah_analysis/Kong2019_parc_fs6_RETEST2/motion_metrics/DVARS_avg_UT_RETEST2_230803.csv")
+          
+          #formatting
+          names(FD_R2)[1] <- "SUBJID"
+          FD_R2$SUBJID <- gsub("^.{0,4}", "", FD_R2$SUBJID) #remove "sub-" string
+          
+          names(DVARS_R2)[1] <- "SUBJID"
+          DVARS_R2$SUBJID <- gsub("^.{0,4}", "", DVARS_R2$SUBJID) #remove "sub-" string
+          
+          #Merge in
+          RETEST2_ALL <- merge(RETEST2_ALL, FD_R2, by=c("SUBJID"), all=FALSE)
+          RETEST2_ALL <- merge(RETEST2_ALL, DVARS_R2, by=c("SUBJID"), all=FALSE)
+          
+          #Rename FD_AVG
+          RETEST2_ALL$FD_R2 <- RETEST2_ALL$FD_avg
+          
+          #WIDE format
+          RETEST2 <- subset(RETEST2_ALL, NewNetwork=="1")
+          
+  #LOAD RETEST 1
+          #Network surface area
+          RETEST1 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Analysis/Study2_Dissertation/Utah_analysis/network_sa/RETEST1/NETWORK_SA_UT_RETEST1_SUB_NET_LH_RH_230527.csv")
+          
+          #Load UT NSAR data
+          RETEST1$SUBJID <- gsub("^.{0,4}", "", RETEST1$SUBJID) #remove "sub-" string
+          RETEST1$Network <- gsub("^.{0,8}", "", RETEST1$NETWORK) #remove "NETWORK-" string
+          RETEST1 <- subset(RETEST1, Network!=0) #drop network0
+          #Switch network ordering to reflect CBIG legend ordering
+          mapping <- c(12, 6, 3, 13, 5, 1, 8, 7, 10, 11, 15, 14, 4, 2, 17, 16, 9)
+          oldvalues <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17)
+          RETEST1$NewNetwork <- mapping[ match(RETEST1$Network, oldvalues) ]
+          RETEST1 <- RETEST1[,c("SUBJID", "LH_SA", "RH_SA", "NewNetwork")]
+          #Create SA LAT variable
+          RETEST1$SA_LAT <- (RETEST1$RH_SA - RETEST1$LH_SA) / (RETEST1$LH_SA + RETEST1$RH_SA)
+          #Create % SA vars
+          RETEST1$LH_SA_PERCENT <- (RETEST1$LH_SA/63103.74)*100
+          RETEST1$RH_SA_PERCENT <- (RETEST1$RH_SA/63196.98)*100
+          
+          
+          #Merge with Demos
+          study2 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/csv_files/study2_UU_NSAR_entirety_230802.csv")
+          study2 <- subset(study2, NewNetwork==1)
+          study2 <- study2[,c("SUBJID", "dataset", "Age_in_Yrs", "sex", "Handedness")]
+          
+          #subset RETEST1 to subjects that passed exclusion criteria
+          UU_IDS <- study2$SUBJID
+          RETEST1 <- RETEST1[RETEST1$SUBJID %in% UU_IDS, ]
+          
+          #merge
+          RETEST1_ALL <- merge(RETEST1, study2, by=c("SUBJID"), all=FALSE)
+          
+          #Grab RETEST1-specific FD and DVARS
+          FD_R1 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Analysis/Study2_Dissertation/Utah_analysis/Kong2019_parc_fs6_RETEST1/motion_metrics/FD_avg_UT_RETEST1_230802.csv")
+          DVARS_R1 <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Analysis/Study2_Dissertation/Utah_analysis/Kong2019_parc_fs6_RETEST1/motion_metrics/DVARS_avg_UT_RETEST1_230803.csv")
+          
+          #formatting
+          names(FD_R1)[1] <- "SUBJID"
+          FD_R1$SUBJID <- gsub("^.{0,4}", "", FD_R1$SUBJID) #remove "sub-" string
+          
+          names(DVARS_R1)[1] <- "SUBJID"
+          DVARS_R1$SUBJID <- gsub("^.{0,4}", "", DVARS_R1$SUBJID) #remove "sub-" string
+          
+          #Merge in
+          RETEST1_ALL <- merge(RETEST1_ALL, FD_R1, by=c("SUBJID"), all=FALSE)
+          RETEST1_ALL <- merge(RETEST1_ALL, DVARS_R1, by=c("SUBJID"), all=FALSE)
+          
+          #Rename FD_AVG
+          RETEST1_ALL$FD_R1 <- RETEST1_ALL$FD_avg
+          
+          #WIDE format
+          RETEST1 <- subset(RETEST1_ALL, NewNetwork=="1")
+          
+    #Merge RETEST datasets
+          RETEST <- merge(RETEST1, RETEST2, by=c("SUBJID", "NewNetwork", "Age_in_Yrs", "dataset", "Handedness"), all=FALSE)
+ 
+          
+#CREATE TABLE
+        #ASD and NT R1
+          favstats(data=RETEST, FD_R1~dataset)
+        #ASD and NT R2
+          favstats(data=RETEST, FD_R2~dataset)
+        #ASD vs NT R1
+          t.test(FD_R1~dataset, data=RETEST)
+        #ASD vs NT R2
+          t.test(FD_R2~dataset, data=RETEST)
+        #ASD R1 vs R2
+          RETEST_ASD <- subset(RETEST, dataset=="UT-ASD")
+          t.test(RETEST_ASD$FD_R1, RETEST_ASD$FD_R2)
+        #NT R1 vs R2
+          RETEST_NT <- subset(RETEST, dataset=="UT-NT")
+          t.test(RETEST_NT$FD_R1, RETEST_NT$FD_R2)
+
+          
+          
+#Figures
+          #ASD R1 vs R2 Mean FD
+          RETEST_ASD <- subset(RETEST, dataset=="UT-ASD")
+            GroupPalettte <- c("#E69F00", "#0072B2")
+            RETEST_ASD$SUBJID <- as.factor(RETEST_ASD$SUBJID)
+            RETEST_ASD$FD_R1 <- as.numeric(RETEST_ASD$FD_R1)
+            RETEST_ASD$FD_R2 <- as.numeric(RETEST_ASD$FD_R2)
+            
+            filename <- paste("Study2_UT_ASD_FD_RETEST_230901.png", sep = "")
+
+            ggplot(RETEST_ASD, aes(x = FD_R1, y = FD_R2, color = dataset)) +
+              labs(x = "Mean FD Run 1 (mm)", y = "Mean FD Run 2 (mm)") +
+              labs(fill = " ", color = " ") +
+              geom_point(aes(fill = dataset),color="black", pch = 21) +
+              geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black", size = 1) +
+              geom_smooth(aes(color = dataset), method = "lm", size = 1, se = FALSE) +
+              scale_color_manual(values = GroupPalettte) +
+              scale_fill_manual(values = GroupPalettte) +
+              theme_bw() +
+              theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                    plot.title = element_text(hjust = 0, size=10),
+                    axis.title = element_text(colour = "black", size = 10),
+                    axis.text.y = element_text(colour = "black", angle = 90, hjust = 0.6, size=9),
+                    axis.text.x = element_text(colour = "black", size=9),
+                    legend.position = "none",
+                    legend.title = element_text(colour = "black", size = 11),
+                    legend.text = element_text(colour = "black", size = 11),
+                    legend.background = element_rect(fill = "white", size = 0.5),
+                    axis.line = element_line(colour = "black", size = 1, linetype = "solid"),
+                    axis.ticks = element_line(colour = "black", size = 1, linetype = "solid"),
+                    panel.border = element_blank(),
+                    panel.background = element_blank())
+            
+            ggsave(filename = filename, width = 3.35, height = 3.35,
+                   path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+       
+          
+          #NT R1 vs R2 Mean FD
+            RETEST_NT <- subset(RETEST, dataset=="UT-NT")
+            GroupPalettte <- c("#0072B2")
+            RETEST_NT$SUBJID <- as.factor(RETEST_NT$SUBJID)
+            RETEST_NT$FD_R1 <- as.numeric(RETEST_NT$FD_R1)
+            RETEST_NT$FD_R2 <- as.numeric(RETEST_NT$FD_R2)
+            
+            filename <- paste("Study2_UT_NT_FD_RETEST_230901.png", sep = "")
+            
+            ggplot(RETEST_NT, aes(x = FD_R1, y = FD_R2, color = dataset)) +
+              labs(x = "Mean FD Run 1 (mm)", y = "Mean FD Run 2 (mm)") +
+              labs(fill = " ", color = " ") +
+              geom_point(aes(fill = dataset),color="black", pch = 21) +
+              geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black", size = 1) +
+              geom_smooth(aes(color = dataset), method = "lm", size = 1, se = FALSE) +
+              scale_color_manual(values = GroupPalettte) +
+              scale_fill_manual(values = GroupPalettte) +
+              theme_bw() +
+              theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                    plot.title = element_text(hjust = 0, size=10),
+                    axis.title = element_text(colour = "black", size = 10),
+                    axis.text.y = element_text(colour = "black", angle = 90, hjust = 0.6, size=9),
+                    axis.text.x = element_text(colour = "black", size=9),
+                    legend.position = "none",
+                    legend.title = element_text(colour = "black", size = 11),
+                    legend.text = element_text(colour = "black", size = 11),
+                    legend.background = element_rect(fill = "white", size = 0.5),
+                    axis.line = element_line(colour = "black", size = 1, linetype = "solid"),
+                    axis.ticks = element_line(colour = "black", size = 1, linetype = "solid"),
+                    panel.border = element_blank(),
+                    panel.background = element_blank())
+            
+            ggsave(filename = filename, width = 3.35, height = 3.35,
+                   path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+            
+           
+            
+        #ASD and NT in the same plot
+            GroupPalettte <- c("#E69F00", "#0072B2")
+            RETEST$SUBJID <- as.factor(RETEST$SUBJID)
+            RETEST$FD_R1 <- as.numeric(RETEST$FD_R1)
+            RETEST$FD_R2 <- as.numeric(RETEST$FD_R2)
+            
+            filename <- paste("Study2_UT_ASD_AND_NT_FD_RETEST_230901.png", sep = "")
+            
+            ggplot(RETEST, aes(x = FD_R1, y = FD_R2, color = dataset)) +
+              labs(x = "Mean FD Run 1 (mm)", y = "Mean FD Run 2 (mm)") +
+              labs(fill = " ", color = " ") +
+              geom_point(aes(fill = dataset),color="black", pch = 21) +
+              geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black", size = 1) +
+              geom_smooth(aes(color = dataset), method = "lm", size = 1, se = FALSE) +
+              scale_color_manual(values = GroupPalettte) +
+              scale_fill_manual(values = GroupPalettte) +
+              theme_bw() +
+              theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                    plot.title = element_text(hjust = 0, size=10),
+                    axis.title = element_text(colour = "black", size = 10),
+                    axis.text.y = element_text(colour = "black", angle = 90, hjust = 0.6, size=9),
+                    axis.text.x = element_text(colour = "black", size=9),
+                    legend.position = "none",
+                    legend.title = element_text(colour = "black", size = 11),
+                    legend.text = element_text(colour = "black", size = 11),
+                    legend.background = element_rect(fill = "white", size = 0.5),
+                    axis.line = element_line(colour = "black", size = 1, linetype = "solid"),
+                    axis.ticks = element_line(colour = "black", size = 1, linetype = "solid"),
+                    panel.border = element_blank(),
+                    panel.background = element_blank())
+            
+            ggsave(filename = filename, width = 3.35, height = 3.35,
+                   path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+            
+                                
 #--------------------------------------TEST-RETEST NSAR-------------------------------------
 #SETUP
         #RETEST1
@@ -946,8 +1405,7 @@ study2 <- subset(study2, NewNetwork=="1")
           ggsave(filename = filename, width = 1.675, height = 1.675,
                  path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
         }
-        
-                
+
                
 #--------------------------------------TEST-RETEST TSNR---------------------------------
         
@@ -1368,6 +1826,65 @@ study2 <- subset(study2, NewNetwork=="1")
           
           
           
+          # Create the BOXPLOT (VERTICAL, 3N)
+          GroupPalette <- c("#0072B2", "#E69F00")
+          UT_NSAR_subset <- UT_NSAR[UT_NSAR$NewNetwork %in% c(5, 8, 11), ]
+          network_order <- c('5','8','11')
+          UT_NSAR_subset$NewNetwork <- factor(UT_NSAR_subset$NewNetwork, level = network_order)
+          dataset_order <- c("UT-NT", "UT-ASD")
+          UT_NSAR_subset$dataset <- factor(UT_NSAR_subset$dataset, level=dataset_order)
+          ggplot(UT_NSAR_subset, aes(x = SA_LAT_ADJ, y = NewNetwork, group=interaction(dataset, NewNetwork), fill=as.factor(dataset))) +
+            geom_boxplot(width = .75, outlier.shape = 21, outlier.fill = NULL) +
+            coord_cartesian(ylim= c(1.2, NA), x=c(-0.68,.72), clip = "off") +
+            labs(y = "", x = "") +
+            geom_vline(xintercept = 0, linetype = "dotted", color = "black") +
+            scale_y_discrete(labels=c('LANG','SAL-A','CTRL-B'))+
+            scale_fill_manual(values = GroupPalette) + 
+            theme(
+              axis.text = element_text(size = 10),
+              axis.title = element_text(size = 10),
+              legend.position = "none",
+              axis.text.y = element_text(colour = "black", angle = 0, hjust = 1),
+              axis.text.x = element_text(colour = "black", vjust=1),
+              panel.background = element_blank(),
+              axis.line = element_line(colour = "black", size = 1, linetype = "solid")
+            )
+          ggsave(filename = paste("Study2_UT_COMPLETE_3N_GROUP_NSAR_Boxplot_230902.png"), width = 2.3, height = 2.3,
+                 path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+          
+          
+          
+          # Create the BOXPLOT (VERTICAL, 8N)
+          GroupPalette <- c("#0072B2", "#E69F00")
+          network_order <- c('6', '15', '5', '8', '12', '2', '11', '17')
+          UT_NSAR_subset <- UT_NSAR[UT_NSAR$NewNetwork %in% network_order, ]
+          UT_NSAR_subset$NewNetwork <- factor(UT_NSAR_subset$NewNetwork, level = network_order)
+          dataset_order <- c("UT-NT", "UT-ASD")
+          UT_NSAR_subset$dataset <- factor(UT_NSAR_subset$dataset, level=dataset_order)
+          ggplot(UT_NSAR_subset, aes(x = SA_LAT_ADJ, y = NewNetwork, group=interaction(dataset, NewNetwork), fill=as.factor(dataset))) +
+            geom_boxplot(width = .75, outlier.shape = 21, outlier.fill = NULL) +
+            coord_cartesian(ylim= c(1.2, NA), x=c(-0.7,.9), clip = "off") +
+            labs(y = "", x = "") +
+            geom_vline(xintercept = 0, linetype = "dotted", color = "black") +
+            scale_y_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
+            scale_fill_manual(values = GroupPalette) + 
+            theme(
+              axis.text = element_text(size = 10),
+              axis.title = element_text(size = 10),
+              legend.position = "none",
+              axis.text.y = element_text(colour = "black", angle = 0, hjust = 1),
+              axis.text.x = element_text(colour = "black", vjust=1),
+              panel.background = element_blank(),
+              axis.line = element_line(colour = "black", size = 1, linetype = "solid")
+            )
+          ggsave(filename = paste("Study2_UT_COMPLETE_GROUP_NSAR_BOXPLOT_230902.png"), width = 3.35, height = 6,
+                 path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+          
+          
+          
+          
+          
+          
     #Adjust LH and RH SA for covariates: mean-centered age, mean-centered FD, group     
           #Create adjusted values
           UT_NSAR$RH_SA_ADJ <- NA
@@ -1476,17 +1993,20 @@ study2 <- subset(study2, NewNetwork=="1")
           
       #Fig. 2A: % LH SA Boxplot in UT
           #Just include specialized networks
-          network_order <- c('6', '15', '5', '13', '10', '9', '7', '4', '14', '16', '3', '1', '8', '12', '2', '11', '17')
+          #network_order <- c('6', '15', '5', '13', '10', '9', '7', '4', '14', '16', '3', '1', '8', '12', '2', '11', '17')
+          network_order <- c('6', '15', '5', '8', '12', '2', '11', '17')
+          UT_NSAR_subset <- UT_NSAR[UT_NSAR$NewNetwork %in% network_order, ]
           # use factor() to set the order of the factor levels
-          UT_NSAR$NewNetwork <- factor(UT_NSAR$NewNetwork, level = network_order)
+          UT_NSAR_subset$NewNetwork <- factor(UT_NSAR_subset$NewNetwork, level = network_order)
           GroupPalette <- c("#E69F00", "#0072B2")
           # use scale_fill_manual() to specify the order of the colors in CBIG_Palette
-          ggplot(UT_NSAR, aes(x = NewNetwork, y = LH_SA_ADJ, group=interaction(dataset, NewNetwork), fill = dataset)) + 
+          ggplot(UT_NSAR_subset, aes(x = NewNetwork, y = LH_SA_ADJ, group=interaction(dataset, NewNetwork), fill = dataset)) + 
             geom_boxplot(width = .75, outlier.shape = 21, outlier.fill = NULL) +
             coord_cartesian(xlim = c(1.2, NA), ylim = c(0, 15), clip = "off") +
             labs(y = "Adj % LH Surface Area", x = "") +
             scale_y_continuous(expand=c(0,0))+
-            scale_x_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'DEF-A', 'CTRL-A', 'SAL-B', 'DAN-B', 'SOM-B', 'DEF-B', 'LIM-A', 'SOM-A', 'VIS-A', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
+            #scale_x_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'DEF-A', 'CTRL-A', 'SAL-B', 'DAN-B', 'SOM-B', 'DEF-B', 'LIM-A', 'SOM-A', 'VIS-A', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
+            scale_x_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
             scale_colour_manual(values = GroupPalette) +
             scale_fill_manual(values = GroupPalette) + 
             theme(
@@ -1504,16 +2024,19 @@ study2 <- subset(study2, NewNetwork=="1")
           
       #Fig. 2B: % RH SA Boxplot in UT
           #Just include specialized networks
-          network_order <- c('6', '15', '5', '13', '10', '9', '7', '4', '14', '16', '3', '1', '8', '12', '2', '11', '17')
+          #network_order <- c('6', '15', '5', '13', '10', '9', '7', '4', '14', '16', '3', '1', '8', '12', '2', '11', '17')
+          network_order <- c('6', '15', '5', '8', '12', '2', '11', '17')
+          UT_NSAR_subset <- UT_NSAR[UT_NSAR$NewNetwork %in% network_order, ]
           # use factor() to set the order of the factor levels
-          UT_NSAR$NewNetwork <- factor(UT_NSAR$NewNetwork, level = network_order)
+          UT_NSAR_subset$NewNetwork <- factor(UT_NSAR_subset$NewNetwork, level = network_order)
           GroupPalette <- c("#E69F00", "#0072B2")
-          ggplot(UT_NSAR, aes(x = NewNetwork, y = RH_SA_ADJ, group=interaction(dataset, NewNetwork), fill = dataset)) + 
+          ggplot(UT_NSAR_subset, aes(x = NewNetwork, y = RH_SA_ADJ, group=interaction(dataset, NewNetwork), fill = dataset)) + 
             geom_boxplot(width = .75, outlier.shape = 21, outlier.fill = NULL) +
             coord_cartesian(xlim = c(1.2, NA), ylim = c(0, 13.5), clip = "off") +
             labs(y = "Adj % RH Surface Area", x = "") +
             scale_y_continuous(expand=c(0,0))+
-            scale_x_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'DEF-A', 'CTRL-A', 'SAL-B', 'DAN-B', 'SOM-B', 'DEF-B', 'LIM-A', 'SOM-A', 'VIS-A', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
+            #scale_x_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'DEF-A', 'CTRL-A', 'SAL-B', 'DAN-B', 'SOM-B', 'DEF-B', 'LIM-A', 'SOM-A', 'VIS-A', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
+            scale_x_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
             scale_colour_manual(values = GroupPalette) +
             scale_fill_manual(values = GroupPalette) + 
             theme(
@@ -1521,7 +2044,7 @@ study2 <- subset(study2, NewNetwork=="1")
               axis.title = element_text(size = 10),
               legend.position = "none",
               axis.text.y = element_text(colour = "black", angle = 90, hjust = 0.6),
-              axis.text.x = element_text(colour = "black", hjust = 1, vjust=1, angle = 20),
+              axis.text.x = element_text(colour = "black", hjust = .5, vjust=1, angle = 0),
               panel.background = element_blank(),
               axis.line = element_line(colour = "black", size = 1, linetype = "solid")
             )
@@ -1597,7 +2120,8 @@ study2 <- subset(study2, NewNetwork=="1")
       #Fig. 2C: use CI_df
           ci_df$data_hemi = as.factor(paste0(ci_df$dataset,ci_df$HEMI))
           # specify the order of the networks
-          network_order <- c('6', '15', '5', '13', '10', '9', '7', '4', '14', '16', '3', '1', '8', '12', '2', '11', '17')
+          #network_order <- c('6', '15', '5', '13', '10', '9', '7', '4', '14', '16', '3', '1', '8', '12', '2', '11', '17')
+          network_order <- c('6', '15', '5', '8', '12', '2', '11', '17')
           ci_df <- ci_df[ci_df$NewNetwork %in% network_order, ]
           #Order networks numerically
           # use factor() to set the order of the factor levels
@@ -1613,8 +2137,53 @@ study2 <- subset(study2, NewNetwork=="1")
             scale_colour_manual(values = GroupPalette) +
             scale_fill_manual(values = GroupPalette) + 
             scale_y_continuous(expand=c(0,0), limits=c(0,11.2))+
-            scale_x_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'DEF-A', 'CTRL-A', 'SAL-B', 'DAN-B', 'SOM-B', 'DEF-B', 'LIM-A', 'SOM-A', 'VIS-A', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
+            #scale_x_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'DEF-A', 'CTRL-A', 'SAL-B', 'DAN-B', 'SOM-B', 'DEF-B', 'LIM-A', 'SOM-A', 'VIS-A', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
+            scale_x_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
             #theme_bw()
+            theme(
+              axis.text = element_text(size = 10),
+              axis.title = element_text(size = 10),
+              legend.position = "none",
+              axis.text.y = element_text(colour = "black", angle = 90, hjust = 0.6),
+              axis.text.x = element_text(colour = "black", hjust = .5, vjust=1, angle =0),
+              panel.background = element_blank(),
+              axis.line = element_line(colour = "black", size = 1, linetype = "solid")
+            )
+          ggsave(filename = paste("Study2_UT_LHRH_SA_ADJ_Percent_17N_Boxplots_230609.png"), width = 6.9, height = 2.35,
+                 path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+
+       
+      #Fig. 2C using ggpattern package for hatching (does not work)
+          ci_df$data_hemi = as.factor(paste0(ci_df$dataset,ci_df$HEMI))
+          # specify the order of the networks
+          network_order <- c('6', '15', '5', '8', '12', '2', '11', '17')
+          ci_df <- ci_df[ci_df$NewNetwork %in% network_order, ]
+          #Order networks numerically
+          # use factor() to set the order of the factor levels
+          ci_df$NewNetwork <- factor(ci_df$NewNetwork, level = network_order)
+          #Order groups manually
+          group_order <- c('UT-ASDLH', "UT-ASDRH", "UT-NTLH", "UT-NTRH")
+          ci_df$data_hemi <- factor(ci_df$data_hemi, levels=group_order)
+          GroupPalette <- c("#E69F00","#FFCC5B", "#0072B2", "#93D8FF")
+          
+          ggplot(ci_df, aes(x = NewNetwork, y = MEAN)) +
+            geom_col_pattern(
+              aes(pattern = exp,
+                  fill = data_hemi), # <- make this an interaction
+              colour = "black",
+              pattern_fill = "black",
+              pattern_angle = 45,
+              pattern_density = 0.1,
+              pattern_spacing = 0.01,
+              position = position_dodge2(preserve = 'single'),
+            ) +                      
+            scale_pattern_manual(values = c(UT-ASDLH = "stripe", UT-ASDRH = "none", UT-NTLH = "stripe", UT-NTRH = "none")) +
+            geom_errorbar(aes(ymin=CI_MIN, ymax = CI_MAX), width = .5,  position = position_dodge(width = .8), color="black", size=.5) +
+            labs(x = "", y = "Adj Mean % Surface Area") +
+            scale_colour_manual(values = GroupPalette) +
+            scale_fill_manual(values = GroupPalette) + 
+            scale_y_continuous(expand=c(0,0), limits=c(0,11.2)) +
+            scale_x_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B')) +
             theme(
               axis.text = element_text(size = 10),
               axis.title = element_text(size = 10),
@@ -1624,9 +2193,78 @@ study2 <- subset(study2, NewNetwork=="1")
               panel.background = element_blank(),
               axis.line = element_line(colour = "black", size = 1, linetype = "solid")
             )
-          ggsave(filename = paste("Study2_UT_LHRH_SA_ADJ_Percent_17N_Boxplots_230609.png"), width = 6.9, height = 2.35,
+          ggsave(filename = paste("Study2_UT_LHRH_SA_ADJ_Percent_8N_HatchedBoxplots_230905.png"), width = 6.9, height = 2.35,
                  path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
-
+          
+             
+          
+          
+          #Fig. 2C using points as hatching (does not work)
+       
+          # Sample data
+          data <- data.frame(
+            Group = c("A", "B", "C", "A", "B", "C"),
+            Value = c(3, 6, 4, 5, 8, 7)
+          )
+          
+          # Load the ggplot2 library
+          library(ggplot2)
+          
+          # Create the barplot with overlaid points for Group A
+          bar_width <- .75
+          ggplot(data, aes(x = Group, y = Value, fill = Group)) +
+            geom_bar(stat = "identity", position = "dodge", width=bar_width) +  # Create the bars
+            geom_point(data = subset(data, Group == "A"), aes(x = Group, y = Value-1), shape = 4, size=bar_width*20, position = position_dodge(width = 0.75)) +  # Overlay points for Group A
+            theme_minimal() 
+          
+          
+          subsetted_ci_df <- subset(ci_df, data_hemi %in% c("UT-ASDLH", "UT-NTLH"))
+          
+          ci_df$data_hemi = as.factor(paste0(ci_df$dataset,ci_df$HEMI))
+          # specify the order of the networks
+          #network_order <- c('6', '15', '5', '13', '10', '9', '7', '4', '14', '16', '3', '1', '8', '12', '2', '11', '17')
+          network_order <- c('6', '15', '5', '8', '12', '2', '11', '17')
+          ci_df <- ci_df[ci_df$NewNetwork %in% network_order, ]
+          #Order networks numerically
+          # use factor() to set the order of the factor levels
+          ci_df$NewNetwork <- factor(ci_df$NewNetwork, level = network_order)
+          #Order groups manually
+          group_order <- c('UT-ASDLH', "UT-ASDRH", "UT-NTLH", "UT-NTRH")
+          ci_df$data_hemi <- factor(ci_df$data_hemi, levels=group_order)
+          GroupPalette <- c("#E69F00","#FFCC5B", "#0072B2", "#93D8FF")
+          p <- ggplot(ci_df, aes(x = NewNetwork, y = MEAN, group=interaction(data_hemi, NewNetwork), fill = data_hemi)) +
+            geom_bar(stat = "identity", position=position_dodge(width = .8)) +
+            geom_errorbar(aes(ymin=CI_MIN, ymax = CI_MAX), width = .5,  position = position_dodge(width = .8), color="black", size=.5) +
+            labs(x = "", y = "Adj Mean % Surface Area") +
+            scale_colour_manual(values = GroupPalette) +
+            scale_fill_manual(values = GroupPalette) + 
+            scale_y_continuous(expand=c(0,0), limits=c(0,11.2))+
+            #scale_x_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'DEF-A', 'CTRL-A', 'SAL-B', 'DAN-B', 'SOM-B', 'DEF-B', 'LIM-A', 'SOM-A', 'VIS-A', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
+            scale_x_discrete(labels=c('DAN-A', 'DEF-C', 'LANG', 'SAL-A', 'CTRL-C', 'VIS-B', 'CTRL-B', 'LIM-B'))+
+            #theme_bw()
+            theme(
+              axis.text = element_text(size = 10),
+              axis.title = element_text(size = 10),
+              legend.position = "none",
+              axis.text.y = element_text(colour = "black", angle = 90, hjust = 0.6),
+              axis.text.x = element_text(colour = "black", hjust = .5, vjust=1, angle =0),
+              panel.background = element_blank(),
+              axis.line = element_line(colour = "black", size = 1, linetype = "solid")
+            )
+          
+          p + geom_segment(
+            data = subset(ci_df, data_hemi %in% c("UT-ASDLH", "UT-NTLH")),
+            aes(x = NewNetwork, group=interaction(data_hemi, NewNetwork), xend=, yend = MEAN),
+            color = "black",  # Customize line color
+            size = 1.5  # Customize line size
+          )
+          
+          print(p)
+          
+          ggsave(filename = paste("Study2_UT_LHRH_SA_ADJ_Percent_8N_HatchedBoxplots_230905.png"), width = 6.9, height = 2.35,
+                 path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+          
+          
 #-----------------------------------MATCHED GROUP COMPARISONS-------------------------------------
 #Uses MatchIt package  
           
@@ -2099,7 +2737,9 @@ study2 <- subset(study2, NewNetwork=="1")
 #Adjusted plot: raincloud 
             #drop NA values
             UT_NSAR_LANG <- subset(UT_NSAR_LANG, LANG_DELAY!="NA")
-            GroupPalettte <- c("#0072B2", "#D55E00", "#E69F00")
+            group_order <- c(0, 2, 1)
+            UT_NSAR_LANG$LANG_DELAY <- factor(UT_NSAR_LANG$LANG_DELAY, levels=group_order)
+            GroupPalettte <- c("#0072B2", "#E69F00", "#D55E00")
             ggplot(UT_NSAR_LANG, aes(x = LANG_DELAY, y = SA_LAT_ADJ, fill=LANG_DELAY)) + 
               ggdist::stat_halfeye(
                 adjust = .5, 
@@ -2122,7 +2762,7 @@ study2 <- subset(study2, NewNetwork=="1")
               labs(y="Adjusted Language NSAR", x="")+
               scale_colour_manual(values=GroupPalettte, labels = c(""))+
               scale_fill_manual(values=GroupPalettte, labels = c("NT", "ASD-LD", "ASD-No LD"))+  theme(axis.text=element_text(size = 9), axis.title = element_text(size = 12))+
-              scale_x_discrete(labels=c("NT", "ASD-LD", "ASD-No LD")) +
+              scale_x_discrete(labels=c("NT", "ASD-No LD", "ASD-LD")) +
               theme(legend.position = "none", axis.text.y =element_text(colour = "black", angle = 90, hjust = 0.6), axis.text.x =element_text(colour = "black", hjust = 0.5))+
               theme(panel.background = element_blank())+
               theme(axis.line = element_line(colour = "black", size = 1, linetype = "solid"))
@@ -2143,7 +2783,9 @@ study2 <- subset(study2, NewNetwork=="1")
             mean_sem <- merge(SEM, MEAN, by=c("NewNetwork", "LANG_DELAY"), all=TRUE)
             
             mean_sem$LANG_DELAY <- as.factor(mean_sem$LANG_DELAY)
-            GroupPalettte <- c("#0072B2", "#D55E00", "#E69F00")
+            group_order <- c(0, 2, 1)
+            UT_NSAR_LANG$LANG_DELAY <- factor(UT_NSAR_LANG$LANG_DELAY, levels=group_order)
+            GroupPalettte <- c("#0072B2", "#E69F00", "#D55E00")
             ggplot(mean_sem, aes(x = LANG_DELAY, y = MEAN, fill=LANG_DELAY)) + 
               geom_errorbar(aes(ymin=(MEAN-SEM), ymax = (MEAN+SEM)), width = 0, color="black", size=.5) +
               geom_point(size = 3, fill=GroupPalettte, shape=21)+ 
@@ -2151,13 +2793,38 @@ study2 <- subset(study2, NewNetwork=="1")
               labs(y="Adjusted Language NSAR", x="")+
               scale_colour_manual(values=GroupPalettte, labels = c(""))+
               scale_fill_manual(values=GroupPalettte, labels = c("NT", "ASD-LD", "ASD-No LD"))+  theme(axis.text=element_text(size = 9), axis.title = element_text(size = 12))+
-              scale_x_discrete(labels=c("NT", "ASD-LD", "ASD-No LD")) +
+              scale_x_discrete(labels=c("NT", "ASD-No LD", "ASD-LD")) +
               theme(legend.position = "none", axis.text.y =element_text(colour = "black", angle = 90, hjust = 0.6), axis.text.x =element_text(colour = "black", hjust = 0.5))+
               theme(panel.background = element_blank())+
               theme(axis.line = element_line(colour = "black", size = 1, linetype = "solid"))
             #save the file
             ggsave(filename = paste("Study2_UT_LDAdj_MEAN_230624.png"), width = 3.35, height = 3.35,
                    path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+            
+            
+            
+            #BOXPLOT
+            UT_NSAR_LANG <- subset(UT_NSAR_LANG, LANG_DELAY!="NA")
+            group_order <- c(0, 2, 1)
+            UT_NSAR_LANG$LANG_DELAY <- factor(UT_NSAR_LANG$LANG_DELAY, levels=group_order)
+            GroupPalettte <- c("#0072B2", "#E69F00", "#D55E00")
+            ggplot(UT_NSAR_LANG, aes(x = LANG_DELAY, y = SA_LAT_ADJ, fill=LANG_DELAY)) + 
+              geom_boxplot(
+                width = .25, 
+                outlier.shape = 21
+              ) +
+              coord_cartesian((xlim = c(1.2, NA)), (ylim=c(-0.64, .64)), clip = "off")+
+              labs(y="Adjusted Language NSAR", x="")+
+              scale_colour_manual(values=GroupPalettte, labels = c(""))+
+              scale_fill_manual(values=GroupPalettte, labels = c("NT", "ASD-LD", "ASD-No LD"))+  theme(axis.text=element_text(size = 9), axis.title = element_text(size = 12))+
+              scale_x_discrete(labels=c("NT", "ASD-No LD", "ASD-LD")) +
+              theme(legend.position = "none", axis.text.y =element_text(colour = "black", angle = 90, hjust = 0.6), axis.text.x =element_text(colour = "black", hjust = 0.5))+
+              theme(panel.background = element_blank())+
+              theme(axis.line = element_line(colour = "black", size = 1, linetype = "solid"))
+            #save the file
+            ggsave(filename = paste("Study2_UT_LDAdj_Boxplot_230906.png"), width = 3.35, height = 3.35,
+                   path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+            
             
             
 #----------------------------------------------GROUP ANALYSIS: UT HYP. 5--------------------------
