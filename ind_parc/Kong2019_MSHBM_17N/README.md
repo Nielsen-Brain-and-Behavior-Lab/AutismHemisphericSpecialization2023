@@ -5,7 +5,7 @@
 2. subjids.txt Text file containing anonymized subject IDs.
 3. Generate_data_step_0_UT.sh Script for generating text files prior to step 1.
 4. parc_step_1_UT_ALL.m MATLAB script for generating session profiles and group parcellation.
-5. Params_Final.mat Group priors from 40 GSP subjects in fsaverage6 space.
+5. Params_Final.mat Group priors from 37 GSP subjects in fsaverage6 space.
 6. Generate data_step_2.5_UT.sh Script for generating text files prior to step 3.
 7. Generate_data_step_2.5_part2_UT Script for determining which subjects have which number of runs available and create lists accordingly prior to step 3.
 8. parc_step_3_UT_ALL.m MATLAB script for generating individual parcellations.
