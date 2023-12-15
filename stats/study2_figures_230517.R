@@ -15,7 +15,7 @@ library(psych) #ICC
 library(readxl) #import excel files
 library(circlize) #chord diagrams
 library(MatchIt) #matching subjects
-library(ggpattern) #hatching on surface area barplots
+#library(ggpattern) #hatching on surface area barplots
 
 #-----------------------------------ALL DEMOS------------------------------
 #Load UTAH dataset
@@ -167,41 +167,70 @@ study2 <- subset(study2, NewNetwork=="1")
         #Format wide for demos figures
         UU_data <- subset(study2, NewNetwork=="1")
         
-           
+    
+    #Identify participants with fMRI data (before exclusion criteria)    
+        UU_ex <- read_excel("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Data/Utah_dataset/Participants/UofU_Master_Demographics_220524.xlsx")
+        UU_ex <- UU_ex[,c("SUBJID", "AutismControl", "Group", "sex", "ScanDateT5", "AgeYrsT5", "TestingT5", "Notes_T5")]
+        
+        #load subjids text list with fMRI data
+        fMRI <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Analysis/Study2_Dissertation/Utah_analysis/CBIG2016_preproc_ALL/subjids/fMRI_data_230825.txt")
+        
+        #merge
+        UU_merge <- merge(fMRI, UU_ex, by=c("SUBJID"), all=FALSE)
+        
+        #table for group (Dx)
+        table(UU_merge$AutismControl)
         
     #Load data (IQ, ADI/ADOS, CELF) times 1-4
       #CELF <- read_excel("C:/Users/maddy/Box/Autism_Longitudinal_Neuroimaging/Jared_BYU/CELF_PreTime1-4_Clean_20190403.xlsx")
       IQ <- read_excel("C:/Users/maddy/Box/Autism_Longitudinal_Neuroimaging/Jared_BYU/UU_Lainhart_Data_June_2015_Times1to3/IQ_allTimes_20Apr15.xlsx") #LONG
+      T5_IQ <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Data/Utah_dataset/Participants/TIME5_IQ.csv")
       ADI_ADOSCSS <- read_excel("C:/Users/maddy/Box/Autism_CSF/data/ADOSADI.xlsx") #file came directly from Molly Prigge, WIDE
         names(ADI_ADOSCSS)[1] <- "SUBJID"
         UU_data_A <- merge(ADI_ADOSCSS, UU_data, by=c("SUBJID"), all=FALSE)
         #Create ADOS var to include Time5 CSS scores when entry isn't available
         UU_data_A$ADOS_CSS_COMB <- ifelse(is.na(UU_data_A$ADOS_CSS.Entry), UU_data_A$ADOS_Total_CSS_T5, UU_data_A$ADOS_CSS.Entry)
+        # Create a new variable 'T5_Used_When_Entry_Missing' to indicate if T5 score is used when Entry is missing
+        UU_data_A$T5_Used_When_Entry_Missing <- ifelse(is.na(UU_data_A$ADOS_CSS.Entry) & !is.na(UU_data_A$ADOS_Total_CSS_T5), 1, 0)
         
       #Take mean scores across available timepoints
         #IQ
-        MEAN_VIQ <-aggregate(x = IQ$VIQ,  # Specify  data column
-                             by = list(IQ$LabID),              # Specify group indicator
-                             FUN = mean, na.rm=TRUE)  
-        names(MEAN_VIQ)[1] <- "SUBJID"
-        names(MEAN_VIQ)[2] <- "MEAN_VIQ"
-        
-        MEAN_PIQ <-aggregate(x = IQ$PIQ,  # Specify  data column
-                             by = list(IQ$LabID),              # Specify group indicator
-                             FUN = mean, na.rm=TRUE)  
-        names(MEAN_PIQ)[1] <- "SUBJID"
-        names(MEAN_PIQ)[2] <- "MEAN_PIQ"
-        
-        MEAN_FIQ <-aggregate(x = as.numeric(IQ$FIQ),  # Specify  data column
-                             by = list(IQ$LabID),              # Specify group indicator
-                             FUN = mean, na.rm=TRUE)  
-        names(MEAN_FIQ)[1] <- "SUBJID"
-        names(MEAN_FIQ)[2] <- "MEAN_FIQ"
+        #MEAN_VIQ <-aggregate(x = IQ$VIQ,  # Specify  data column
+        #                     by = list(IQ$LabID),              # Specify group indicator
+        #                     FUN = mean, na.rm=TRUE)  
+        #names(MEAN_VIQ)[1] <- "SUBJID"
+        #names(MEAN_VIQ)[2] <- "MEAN_VIQ"
+      #  
+        #MEAN_PIQ <-aggregate(x = IQ$PIQ,  # Specify  data column
+        #                     by = list(IQ$LabID),              # Specify group indicator
+        #                     FUN = mean, na.rm=TRUE)  
+        #names(MEAN_PIQ)[1] <- "SUBJID"
+        #names(MEAN_PIQ)[2] <- "MEAN_PIQ"
+      #  
+        #MEAN_FIQ <-aggregate(x = as.numeric(IQ$FIQ),  # Specify  data column
+        #                     by = list(IQ$LabID),              # Specify group indicator
+        #                     FUN = mean, na.rm=TRUE)  
+        #names(MEAN_FIQ)[1] <- "SUBJID"
+        #names(MEAN_FIQ)[2] <- "MEAN_FIQ"
         
         #Merge with UT NSAR data
-        UU_IQ <- merge(MEAN_VIQ, UU_data, by=c("SUBJID"), all=TRUE)
-        UU_IQ <- merge(MEAN_PIQ, UU_IQ, by=c("SUBJID"), all=TRUE)
-        UU_IQ <- merge(MEAN_FIQ, UU_IQ, by=c("SUBJID"), all=TRUE)
+        #UU_IQ <- merge(MEAN_VIQ, UU_data, by=c("SUBJID"), all=TRUE)
+        #UU_IQ <- merge(MEAN_PIQ, UU_IQ, by=c("SUBJID"), all=TRUE)
+        #UU_IQ <- merge(MEAN_FIQ, UU_IQ, by=c("SUBJID"), all=TRUE)
+        #5. PIQ  
+        #favstats(data=UU_IQ, MEAN_PIQ~dataset)
+        #t.test(MEAN_PIQ~dataset, data=UU_IQ)
+        #6. VIQ  
+        #favstats(data=UU_IQ, MEAN_VIQ~dataset)
+        #t.test(MEAN_VIQ~dataset, data=UU_IQ) 
+        #7. FIQ  
+        #favstats(data=UU_IQ, MEAN_FIQ~dataset)
+        #t.test(MEAN_FIQ~dataset, data=UU_IQ)
+        
+        
+        
+        #Merge T5 IQ with UT NSAR data
+        UU_IQ <- merge(T5_IQ, UU_data, by=c("SUBJID"), all=TRUE)
         
         #Filter to participants with parc data
         UU_IQ <- subset(UU_IQ, FD_avg!="NA")
@@ -242,23 +271,25 @@ study2 <- subset(study2, NewNetwork=="1")
         #Group comparison (t-test)
         t.test(Handedness~dataset, data=UU_data)
       #5. PIQ  
-        favstats(data=UU_IQ, MEAN_PIQ~dataset)
-        t.test(MEAN_PIQ~dataset, data=UU_IQ)
+        favstats(data=UU_IQ, PIQ_T5~dataset)
+        t.test(PIQ_T5~dataset, data=UU_IQ)
       #6. VIQ  
-        favstats(data=UU_IQ, MEAN_VIQ~dataset)
-        t.test(MEAN_VIQ~dataset, data=UU_IQ) 
+        favstats(data=UU_IQ, VIQ_T5~dataset)
+        t.test(VIQ_T5~dataset, data=UU_IQ) 
       #7. FIQ  
-        favstats(data=UU_IQ, MEAN_FIQ~dataset)
-        t.test(MEAN_FIQ~dataset, data=UU_IQ) 
+        favstats(data=UU_IQ, FIQ_T5~dataset)
+        t.test(FIQ_T5~dataset, data=UU_IQ) 
       #8. ADOS CSS Entry/T5
         favstats(UU_data_A$ADOS_CSS_COMB)
+        #Number of subjects using T5 data
+        table(UU_data_A$T5_Used_When_Entry_Missing)
       #9. ADI-R
         favstats(UU_data_A$ADI_revised)
     
         
 #Low verbal/cog performance (IQ threshold FIQ <=79)  
       #Create threshold var
-        UU_IQ$LVCP <- ifelse(UU_IQ$MEAN_FIQ <= 79, 1, 0)
+        UU_IQ$LVCP <- ifelse(UU_IQ$FIQ_T5 <= 79, 1, 0)
         table(UU_IQ$LVCP, UU_IQ$dataset)
         #1=LVCP, 0=HVCP, NA=NA
         
@@ -982,44 +1013,24 @@ study2 <- subset(study2, NewNetwork=="1")
         
         #Load data (IQ, ADI/ADOS, CELF) times 1-4
         #CELF <- read_excel("C:/Users/maddy/Box/Autism_Longitudinal_Neuroimaging/Jared_BYU/CELF_PreTime1-4_Clean_20190403.xlsx")
-        IQ <- read_excel("C:/Users/maddy/Box/Autism_Longitudinal_Neuroimaging/Jared_BYU/UU_Lainhart_Data_June_2015_Times1to3/IQ_allTimes_20Apr15.xlsx") #LONG
+        T5_IQ <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Data/Utah_dataset/Participants/TIME5_IQ.csv")
         ADI_ADOSCSS <- read_excel("C:/Users/maddy/Box/Autism_CSF/data/ADOSADI.xlsx") #file came directly from Molly Prigge, WIDE
         names(ADI_ADOSCSS)[1] <- "SUBJID"
         UU_data_A <- merge(ADI_ADOSCSS, RETEST, by=c("SUBJID"), all=FALSE)
         #Create ADOS var to include Time5 CSS scores when entry isn't available
         UU_data_A$ADOS_CSS_COMB <- ifelse(is.na(UU_data_A$ADOS_CSS.Entry), UU_data_A$ADOS_Total_CSS_T5, UU_data_A$ADOS_CSS.Entry)
-        
-        #Take mean scores across available timepoints
-        #IQ
-        MEAN_VIQ <-aggregate(x = IQ$VIQ,  # Specify  data column
-                             by = list(IQ$LabID),              # Specify group indicator
-                             FUN = mean, na.rm=TRUE)  
-        names(MEAN_VIQ)[1] <- "SUBJID"
-        names(MEAN_VIQ)[2] <- "MEAN_VIQ"
-        
-        MEAN_PIQ <-aggregate(x = IQ$PIQ,  # Specify  data column
-                             by = list(IQ$LabID),              # Specify group indicator
-                             FUN = mean, na.rm=TRUE)  
-        names(MEAN_PIQ)[1] <- "SUBJID"
-        names(MEAN_PIQ)[2] <- "MEAN_PIQ"
-        
-        MEAN_FIQ <-aggregate(x = as.numeric(IQ$FIQ),  # Specify  data column
-                             by = list(IQ$LabID),              # Specify group indicator
-                             FUN = mean, na.rm=TRUE)  
-        names(MEAN_FIQ)[1] <- "SUBJID"
-        names(MEAN_FIQ)[2] <- "MEAN_FIQ"
+        # Create a new variable 'T5_Used_When_Entry_Missing' to indicate if T5 score is used when Entry is missing
+        UU_data_A$T5_Used_When_Entry_Missing <- ifelse(is.na(UU_data_A$ADOS_CSS.Entry) & !is.na(UU_data_A$ADOS_Total_CSS_T5), 1, 0)
         
         #Merge with UT NSAR data
-        UU_IQ <- merge(MEAN_VIQ, RETEST, by=c("SUBJID"), all=TRUE)
-        UU_IQ <- merge(MEAN_PIQ, UU_IQ, by=c("SUBJID"), all=TRUE)
-        UU_IQ <- merge(MEAN_FIQ, UU_IQ, by=c("SUBJID"), all=TRUE)
-        
+        UU_IQ <- merge(T5_IQ, RETEST, by=c("SUBJID"), all=TRUE)
+
         #Filter to participants with parc data
         UU_IQ <- subset(UU_IQ, SA_LAT!="NA")
         
         
         
-#RETEST DEMOS TABLE  
+#RETEST DEMOS TABLE (TABLE 2) 
         #0. ASD/NT
           table(RETEST$dataset)
         #1. Age at scan
@@ -1035,16 +1046,18 @@ study2 <- subset(study2, NewNetwork=="1")
           #Group comparison (t-test)
           t.test(Handedness~dataset, data=RETEST)
         #4. PIQ  
-          favstats(data=UU_IQ, MEAN_PIQ~dataset)
-          t.test(MEAN_PIQ~dataset, data=UU_IQ)
+          favstats(data=UU_IQ, PIQ_T5~dataset)
+          t.test(PIQ_T5~dataset, data=UU_IQ)
         #5. VIQ  
-          favstats(data=UU_IQ, MEAN_VIQ~dataset)
-          t.test(MEAN_VIQ~dataset, data=UU_IQ) 
+          favstats(data=UU_IQ, VIQ_T5~dataset)
+          t.test(VIQ_T5~dataset, data=UU_IQ) 
         #6. FIQ  
-          favstats(data=UU_IQ, MEAN_FIQ~dataset)
-          t.test(MEAN_FIQ~dataset, data=UU_IQ) 
+          favstats(data=UU_IQ, FIQ_T5~dataset)
+          t.test(FIQ_T5~dataset, data=UU_IQ) 
         #7. ADOS CSS Entry/T5
           favstats(UU_data_A$ADOS_CSS_COMB)
+          #find number of T5 CSS scores
+          table(UU_data_A$T5_Used_When_Entry_Missing)
         #8. ADI-R
           favstats(UU_data_A$ADI_revised)
         
@@ -2315,7 +2328,8 @@ study2 <- subset(study2, NewNetwork=="1")
           }
           
           #Access model results through: summary(UT_NSAR_FDMATCH_model1)
-
+            #Bonferroni adjustment by multiplying by 3 = number of comparisons
+            
 #2. VOLUMES AVAILABLE
             #MATCH on % VOLUMES AVAILABLE
               #Load UT dataset
@@ -2364,7 +2378,7 @@ study2 <- subset(study2, NewNetwork=="1")
             
             #Access model results through: summary(UT_NSAR_PVMATCH_model1)
             
- 
+            #Bonferroni adjustment by multiplying by 3 = number of comparisons
               
 #2. FIQ
               #MATCH on % VOLUMES AVAILABLE
@@ -2375,28 +2389,23 @@ study2 <- subset(study2, NewNetwork=="1")
                 UT_NSAR$FD_Center <- UT_NSAR$FD_avg - (mean(UT_NSAR$FD_avg))
                 
                 #Merge in FIQ
-                IQ <- read_excel("C:/Users/maddy/Box/Autism_Longitudinal_Neuroimaging/Jared_BYU/UU_Lainhart_Data_June_2015_Times1to3/IQ_allTimes_20Apr15.xlsx") #LONG
-               
-                #Take mean scores across available timepoints
-                MEAN_FIQ <-aggregate(x = as.numeric(IQ$FIQ),  # Specify  data column
-                                     by = list(IQ$LabID),              # Specify group indicator
-                                     FUN = mean, na.rm=TRUE)  
-                names(MEAN_FIQ)[1] <- "SUBJID"
-                names(MEAN_FIQ)[2] <- "MEAN_FIQ"
+                #Time5 IQ
+                T5_IQ <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Data/Utah_dataset/Participants/TIME5_IQ.csv")
+                
                 
                 #Merge with UT NSAR data
-                UU_IQ <- merge(MEAN_FIQ, UT_NSAR, by=c("SUBJID"), all=TRUE)
+                UU_IQ <- merge(T5_IQ, UT_NSAR, by=c("SUBJID"), all=TRUE)
                 
                 #Filter to participants with parc data
                 UU_IQ <- subset(UU_IQ, FD_avg!="NA")
                 
                 #Filter to participants with FIQ data
-                UU_IQ <- subset(UU_IQ, MEAN_FIQ!="NA")
+                UU_IQ <- subset(UU_IQ, FIQ_T5!="NA")
                 
                 #Binarize AutismControl
                 UU_IQ$Dx_bin <- ifelse(UU_IQ$dataset == "UT-NT", 0, 1)
                 set.seed(42) #seed is set for reproducibility
-                m.out=matchit(Dx_bin~MEAN_FIQ, method="nearest", data=UU_IQ, ratio=1)
+                m.out=matchit(Dx_bin~FIQ_T5, method="nearest", data=UU_IQ, ratio=1)
                 summary(m.out)
                 #verify good match with qq-plots
                 plot(m.out, type = "qq", interactive = FALSE, which.xs = c("MEAN_FIQ"))
@@ -2432,7 +2441,8 @@ study2 <- subset(study2, NewNetwork=="1")
               }
               
               #Access model results through: summary(UT_NSAR_FIQMATCH_model1)
-              
+                #Bonferroni adjustment by multiplying by 3 = number of comparisons
+                
                                  
 #-----------------------------------GROUP ANALYSIS: UT HYP.3---------------------------
 #SETUP
@@ -2440,30 +2450,35 @@ study2 <- subset(study2, NewNetwork=="1")
           UT_NSAR <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/csv_files/study2_UU_NSAR_entirety_230802.csv")
           
           #Load IQ (times 1-4)
-          IQ <- read_excel("C:/Users/maddy/Box/Autism_Longitudinal_Neuroimaging/Jared_BYU/UU_Lainhart_Data_June_2015_Times1to3/IQ_allTimes_20Apr15.xlsx")
+          #IQ <- read_excel("C:/Users/maddy/Box/Autism_Longitudinal_Neuroimaging/Jared_BYU/UU_Lainhart_Data_June_2015_Times1to3/IQ_allTimes_20Apr15.xlsx")
   
           #Take mean scores across available timepoints
           #IQ
-            MEAN_VIQ <-aggregate(x = IQ$VIQ,  # Specify  data column
-                                   by = list(IQ$LabID),              # Specify group indicator
-                                   FUN = mean, na.rm=TRUE)  
-            names(MEAN_VIQ)[1] <- "SUBJID"
-            names(MEAN_VIQ)[2] <- "MEAN_VIQ"
-            
-            MEAN_PIQ <-aggregate(x = IQ$PIQ,  # Specify  data column
-                                 by = list(IQ$LabID),              # Specify group indicator
-                                 FUN = mean, na.rm=TRUE)  
-            names(MEAN_PIQ)[1] <- "SUBJID"
-            names(MEAN_PIQ)[2] <- "MEAN_PIQ"
-            
-            MEAN_VIQ <-aggregate(x = IQ$VIQ,  # Specify  data column
-                                 by = list(IQ$LabID),              # Specify group indicator
-                                 FUN = mean, na.rm=TRUE)  
-            names(MEAN_VIQ)[1] <- "SUBJID"
-            names(MEAN_VIQ)[2] <- "MEAN_VIQ"
-            
-            #Merge with UT NSAR data
-            UT_NSAR_IQ <- merge(MEAN_VIQ, UT_NSAR, by=c("SUBJID"), all=FALSE)
+          #  MEAN_VIQ <-aggregate(x = IQ$VIQ,  # Specify  data column
+          #                         by = list(IQ$LabID),              # Specify group indicator
+          #                         FUN = mean, na.rm=TRUE)  
+          #  names(MEAN_VIQ)[1] <- "SUBJID"
+          #  names(MEAN_VIQ)[2] <- "MEAN_VIQ"
+          #  
+          #  MEAN_PIQ <-aggregate(x = IQ$PIQ,  # Specify  data column
+          #                       by = list(IQ$LabID),              # Specify group indicator
+          #                       FUN = mean, na.rm=TRUE)  
+          #  names(MEAN_PIQ)[1] <- "SUBJID"
+          #  names(MEAN_PIQ)[2] <- "MEAN_PIQ"
+          #  
+          #  MEAN_VIQ <-aggregate(x = IQ$VIQ,  # Specify  data column
+          #                       by = list(IQ$LabID),              # Specify group indicator
+          #                       FUN = mean, na.rm=TRUE)  
+          #  names(MEAN_VIQ)[1] <- "SUBJID"
+          #  names(MEAN_VIQ)[2] <- "MEAN_VIQ"
+          #  
+          
+            #Time5 IQ
+            T5_IQ <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Data/Utah_dataset/Participants/TIME5_IQ.csv")
+                
+                
+           #Merge with UT NSAR data
+            UT_NSAR_IQ <- merge(T5_IQ, UT_NSAR, by=c("SUBJID"), all=FALSE)
             
             #Filter to LANG network
             UT_NSAR_IQ <- subset(UT_NSAR_IQ, NewNetwork=="5")
@@ -2476,11 +2491,11 @@ study2 <- subset(study2, NewNetwork=="1")
             UT_NSAR_IQ$Age_Center <- as.numeric(UT_NSAR_IQ$Age_in_Yrs - (mean(UT_NSAR_IQ$Age_in_Yrs)))
             UT_NSAR_IQ$FD_Center <- as.numeric(UT_NSAR_IQ$FD_avg - (mean(UT_NSAR_IQ$FD_avg)))
             UT_NSAR_IQ$SA_LAT <- as.numeric(UT_NSAR_IQ$SA_LAT)
-            UT_NSAR_IQ$MEAN_VIQ <- as.numeric(UT_NSAR_IQ$MEAN_VIQ)    
+            UT_NSAR_IQ$VIQ_T5 <- as.numeric(UT_NSAR_IQ$VIQ_T5)    
             UT_NSAR_IQ$Handedness <- as.numeric(UT_NSAR_IQ$Handedness)
             
           #Fit model   
-            model_IQ <- lm(MEAN_VIQ ~ dataset + SA_LAT + Age_Center + FD_Center + Handedness, data = UT_NSAR_IQ)
+            model_IQ <- lm(VIQ_T5 ~ dataset + SA_LAT + Age_Center + FD_Center + Handedness, data = UT_NSAR_IQ)
             summary(model_IQ)
             
             
@@ -2502,8 +2517,8 @@ study2 <- subset(study2, NewNetwork=="1")
             
             #Apply formula from Qurechi 2014
             UT_NSAR_IQ$VIQ_ADJ <- "NA"
-            UT_NSAR_IQ$VIQ_ADJ <- ifelse(UT_NSAR_IQ$dataset=="UT-ASD", (UT_NSAR_IQ$MEAN_VIQ - ( (BETA_AGE*(UT_NSAR_IQ$Age_Center - MEAN_AGE)) + (BETA_FD*(UT_NSAR_IQ$FD_Center - MEAN_FD)) + (BETA_HAND*(UT_NSAR_IQ$Handedness - MEAN_HAND)) )), UT_NSAR_IQ$VIQ_ADJ)
-            UT_NSAR_IQ$VIQ_ADJ <- ifelse(UT_NSAR_IQ$dataset=="UT-NT", (UT_NSAR_IQ$MEAN_VIQ - ( (BETA_AGE*(UT_NSAR_IQ$Age_Center - MEAN_AGE)) + (BETA_GROUP*(UT_NSAR_IQ$GROUP_BIN - MEAN_GROUP)) + (BETA_FD*(UT_NSAR_IQ$FD_Center - MEAN_FD))+ (BETA_HAND*(UT_NSAR_IQ$Handedness - MEAN_HAND)) )), UT_NSAR_IQ$VIQ_ADJ )
+            UT_NSAR_IQ$VIQ_ADJ <- ifelse(UT_NSAR_IQ$dataset=="UT-ASD", (UT_NSAR_IQ$VIQ_T5 - ( (BETA_AGE*(UT_NSAR_IQ$Age_Center - MEAN_AGE)) + (BETA_FD*(UT_NSAR_IQ$FD_Center - MEAN_FD)) + (BETA_HAND*(UT_NSAR_IQ$Handedness - MEAN_HAND)) )), UT_NSAR_IQ$VIQ_ADJ)
+            UT_NSAR_IQ$VIQ_ADJ <- ifelse(UT_NSAR_IQ$dataset=="UT-NT", (UT_NSAR_IQ$VIQ_T5 - ( (BETA_AGE*(UT_NSAR_IQ$Age_Center - MEAN_AGE)) + (BETA_GROUP*(UT_NSAR_IQ$GROUP_BIN - MEAN_GROUP)) + (BETA_FD*(UT_NSAR_IQ$FD_Center - MEAN_FD))+ (BETA_HAND*(UT_NSAR_IQ$Handedness - MEAN_HAND)) )), UT_NSAR_IQ$VIQ_ADJ )
 
             #Drop NAs
             UT_NSAR_IQ <- subset(UT_NSAR_IQ, VIQ_ADJ!="NaN")
@@ -2561,37 +2576,20 @@ study2 <- subset(study2, NewNetwork=="1")
         #subset to ASD
             UT_NSAR_LANG_ASD <- subset(UT_NSAR_LANG, dataset=="UT-ASD")
         #bring in IQ
-            IQ <- read_excel("C:/Users/maddy/Box/Autism_Longitudinal_Neuroimaging/Jared_BYU/UU_Lainhart_Data_June_2015_Times1to3/IQ_allTimes_20Apr15.xlsx") #LONG
-            #IQ
-            MEAN_VIQ <-aggregate(x = IQ$VIQ,  # Specify  data column
-                                 by = list(IQ$LabID),              # Specify group indicator
-                                 FUN = mean, na.rm=TRUE)  
-            names(MEAN_VIQ)[1] <- "SUBJID"
-            names(MEAN_VIQ)[2] <- "MEAN_VIQ"
-            
-            MEAN_PIQ <-aggregate(x = IQ$PIQ,  # Specify  data column
-                                 by = list(IQ$LabID),              # Specify group indicator
-                                 FUN = mean, na.rm=TRUE)  
-            names(MEAN_PIQ)[1] <- "SUBJID"
-            names(MEAN_PIQ)[2] <- "MEAN_PIQ"
-            
-            MEAN_FIQ <-aggregate(x = as.numeric(IQ$FIQ),  # Specify  data column
-                                 by = list(IQ$LabID),              # Specify group indicator
-                                 FUN = mean, na.rm=TRUE)  
-            names(MEAN_FIQ)[1] <- "SUBJID"
-            names(MEAN_FIQ)[2] <- "MEAN_FIQ"
+            T5_IQ <- read.csv("C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Data/Utah_dataset/Participants/TIME5_IQ.csv")
             
             #Merge with UT NSAR data
-            UT_NSAR_LANG_ASD <- merge(MEAN_VIQ, UT_NSAR_LANG_ASD, by=c("SUBJID"), all=TRUE)
-            UT_NSAR_LANG_ASD <- merge(MEAN_PIQ, UT_NSAR_LANG_ASD, by=c("SUBJID"), all=TRUE)
-            UT_NSAR_LANG_ASD <- merge(MEAN_FIQ, UT_NSAR_LANG_ASD, by=c("SUBJID"), all=TRUE)
-            
+            UT_NSAR_LANG_ASD <- merge(T5_IQ, UT_NSAR_LANG_ASD, by=c("SUBJID"), all=TRUE)
+           
             #Bring in ADOS CSS/ADI-R
             ADI_ADOSCSS <- read_excel("C:/Users/maddy/Box/Autism_CSF/data/ADOSADI.xlsx") #file came directly from Molly Prigge, WIDE
             names(ADI_ADOSCSS)[1] <- "SUBJID"
             #Create ADOS var to include Time5 CSS scores when entry isn't available
             ADI_ADOSCSS$ADOS_CSS_COMB <- ifelse(is.na(ADI_ADOSCSS$ADOS_CSS.Entry), ADI_ADOSCSS$ADOS_Total_CSS_T5, ADI_ADOSCSS$ADOS_CSS.Entry)
-              #merge with UT NSAR data
+            # Create a new variable 'T5_Used_When_Entry_Missing' to indicate if T5 score is used when Entry is missing
+            ADI_ADOSCSS$T5_Used_When_Entry_Missing <- ifelse(is.na(ADI_ADOSCSS$ADOS_CSS.Entry) & !is.na(ADI_ADOSCSS$ADOS_Total_CSS_T5), 1, 0)
+            
+             #merge with UT NSAR data
               UT_NSAR_LANG_ASD <- merge(ADI_ADOSCSS, UT_NSAR_LANG_ASD, by=c("SUBJID"), all=TRUE)
             
             #Filter to participants with parc data
@@ -2619,19 +2617,21 @@ study2 <- subset(study2, NewNetwork=="1")
             #Group comparison (t-test)
             t.test(Handedness~LANG_DELAY, data=UT_NSAR_LANG_ASD)
         #5. Mean PIQ 
-            favstats(data=UT_NSAR_LANG_ASD, MEAN_PIQ~LANG_DELAY)
+            favstats(data=UT_NSAR_LANG_ASD, PIQ_T5~LANG_DELAY)
             #Group comparison (t-test)
-            t.test(MEAN_PIQ~LANG_DELAY, data=UT_NSAR_LANG_ASD) 
+            t.test(PIQ_T5~LANG_DELAY, data=UT_NSAR_LANG_ASD) 
         #6. Mean VIQ 
-            favstats(data=UT_NSAR_LANG_ASD, MEAN_VIQ~LANG_DELAY)
+            favstats(data=UT_NSAR_LANG_ASD, VIQ_T5~LANG_DELAY)
             #Group comparison (t-test)
-            t.test(MEAN_VIQ~LANG_DELAY, data=UT_NSAR_LANG_ASD) 
+            t.test(VIQ_T5~LANG_DELAY, data=UT_NSAR_LANG_ASD) 
         #7. Mean FIQ 
-            favstats(data=UT_NSAR_LANG_ASD, MEAN_FIQ~LANG_DELAY)
+            favstats(data=UT_NSAR_LANG_ASD, FIQ_T5~LANG_DELAY)
             #Group comparison (t-test)
-            t.test(MEAN_FIQ~LANG_DELAY, data=UT_NSAR_LANG_ASD) 
+            t.test(FIQ_T5~LANG_DELAY, data=UT_NSAR_LANG_ASD) 
         #8. ADOS CSS
             favstats(data=UT_NSAR_LANG_ASD, ADOS_CSS_COMB~LANG_DELAY)
+            #Number of subjects with T5 data
+            table(UT_NSAR_LANG_ASD$T5_Used_When_Entry_Missing, UT_NSAR_LANG_ASD$LANG_DELAY)
             #Group comparison (t-test)
             t.test(ADOS_CSS_COMB~LANG_DELAY, data=UT_NSAR_LANG_ASD) 
         #9. ADI-R
@@ -2804,27 +2804,49 @@ study2 <- subset(study2, NewNetwork=="1")
             
             
             #BOXPLOT
+            #UT_NSAR_LANG <- subset(UT_NSAR_LANG, LANG_DELAY!="NA")
+            #group_order <- c(0, 2, 1)
+            #UT_NSAR_LANG$LANG_DELAY <- factor(UT_NSAR_LANG$LANG_DELAY, levels=group_order)
+            #GroupPalettte <- c("#0072B2", "#E69F00", "#D55E00")
+            #ggplot(UT_NSAR_LANG, aes(x = LANG_DELAY, y = SA_LAT_ADJ, fill=LANG_DELAY)) + 
+            #  geom_boxplot(
+            #    width = .25, 
+            #    outlier.shape = 21
+            #  ) +
+            #  coord_cartesian((xlim = c(1.2, NA)), (ylim=c(-0.64, .64)), clip = "off")+
+            #  labs(y="Adjusted Language NSAR", x="")+
+            #  scale_colour_manual(values=GroupPalettte, labels = c(""))+
+            #  scale_fill_manual(values=GroupPalettte, labels = c("NT", "ASD-LD", "ASD-No LD"))+  theme(axis.text=element_text(size = 9), axis.title = element_text(size = 12))+
+            #  scale_x_discrete(labels=c("NT", "ASD-No LD", "ASD-LD")) +
+            #  theme(legend.position = "none", axis.text.y =element_text(colour = "black", angle = 90, hjust = 0.6), axis.text.x =element_text(colour = "black", hjust = 0.5))+
+            #  theme(panel.background = element_blank())+
+            #  theme(axis.line = element_line(colour = "black", size = 1, linetype = "solid"))
+            ##save the file
+            #ggsave(filename = paste("Study2_UT_LDAdj_Boxplot_230906.png"), width = 3.35, height = 3.35,
+            #       path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
+            
+            
+            #BOXPLOT-FLIP AXES
             UT_NSAR_LANG <- subset(UT_NSAR_LANG, LANG_DELAY!="NA")
             group_order <- c(0, 2, 1)
             UT_NSAR_LANG$LANG_DELAY <- factor(UT_NSAR_LANG$LANG_DELAY, levels=group_order)
             GroupPalettte <- c("#0072B2", "#E69F00", "#D55E00")
-            ggplot(UT_NSAR_LANG, aes(x = LANG_DELAY, y = SA_LAT_ADJ, fill=LANG_DELAY)) + 
+            ggplot(UT_NSAR_LANG, aes(x = SA_LAT_ADJ, y = LANG_DELAY, fill=LANG_DELAY)) + 
               geom_boxplot(
                 width = .25, 
                 outlier.shape = 21
               ) +
-              coord_cartesian((xlim = c(1.2, NA)), (ylim=c(-0.64, .64)), clip = "off")+
-              labs(y="Adjusted Language NSAR", x="")+
+              coord_cartesian((xlim=c(-0.64, .64)), (ylim = c(1.2, NA)), clip = "off")+
+              labs(x="Adjusted Language NSAR", y="")+
               scale_colour_manual(values=GroupPalettte, labels = c(""))+
               scale_fill_manual(values=GroupPalettte, labels = c("NT", "ASD-LD", "ASD-No LD"))+  theme(axis.text=element_text(size = 9), axis.title = element_text(size = 12))+
-              scale_x_discrete(labels=c("NT", "ASD-No LD", "ASD-LD")) +
-              theme(legend.position = "none", axis.text.y =element_text(colour = "black", angle = 90, hjust = 0.6), axis.text.x =element_text(colour = "black", hjust = 0.5))+
+              scale_y_discrete(labels=c("NT", "ASD-No LD", "ASD-LD")) +
+              theme(legend.position = "none", axis.text.y =element_text(colour = "black", angle = 0, hjust = 0.6), axis.text.x =element_text(colour = "black", hjust = 0.5))+
               theme(panel.background = element_blank())+
               theme(axis.line = element_line(colour = "black", size = 1, linetype = "solid"))
             #save the file
-            ggsave(filename = paste("Study2_UT_LDAdj_Boxplot_230906.png"), width = 3.35, height = 3.35,
+            ggsave(filename = paste("Study2_UT_LDAdj_Boxplot_231214.png"), width = 3.35, height = 3.35,
                    path = "C:/Users/maddy/Box/Autism_Hemispheric_Specialization/Figures/study2_figures/png_figures/", dpi = 300)
-            
             
             
 #----------------------------------------------GROUP ANALYSIS: UT HYP. 5--------------------------
