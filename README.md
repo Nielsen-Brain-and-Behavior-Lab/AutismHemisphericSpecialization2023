@@ -4,7 +4,7 @@
 The aim of this study was to estimate hemispheric speiclaization in autism using an individual-level approach and then explore potential relationships between language specialization and behavioral phenotypes including verbal ability, language delay, and autism symptom severity. Using multi-echo resting-state fMRI scans, we generated individual network parcellations and estimated network specialization using a surface area-based approach. 
 
 ## Associated Publications
-<Coming Soon!>
+Preprint: https://doi.org/10.1101/2023.12.15.571928
 
 ## Getting Started
 Scripts are organized in the following folders: preproc, ind_parc, network_sa, and stats.
